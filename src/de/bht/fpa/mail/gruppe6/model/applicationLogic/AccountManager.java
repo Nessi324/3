@@ -1,10 +1,10 @@
-/*
- * This is the class that manages
- * accounts.
- * 
- * @author Simone Strippgen
- */
-public class AccountManager {
+package de.bht.fpa.mail.gruppe6.model.applicationLogic;
+
+import java.util.List;
+import de.bht.fpa.mail.gruppe6.model.data.Account;
+
+
+public class AccountManager implements AccountDAOIF {
 
     private AccountDAOIF accountDB;
     private List<Account> accountList;
@@ -20,23 +20,26 @@ public class AccountManager {
      * @param name  name of the account 
      */
     public Account getAccount(String name) {
-       // hier kommt Ihr Code hinein
-    }
+
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
 
     /**
      * @return a list of all account names.
      */
     public List<Account> getAllAccounts() {   
-        // hier kommt Ihr Code hinein
-    }
+
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
 
     /**
      * Saves the given Account in the data store, if an account
      * with the given name does not exist.
      * @param account  the account that should be saved
      */
-    public void saveAccount(Account acc) {
-       // hier kommt Ihr Code hinein
+    public Account saveAccount(Account acc) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    
     }
 
     /**
@@ -45,6 +48,7 @@ public class AccountManager {
      * @return true if update was successful.
      */
     public boolean updateAccount(Account account) {
-       // hier kommt Ihr Code hinein
-    }
+
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
 }

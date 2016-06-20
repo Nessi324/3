@@ -1,4 +1,8 @@
+package de.bht.fpa.mail.gruppe6.model.applicationLogic;
 
+
+import de.bht.fpa.mail.gruppe6.model.data.Account;
+import de.bht.fpa.mail.gruppe6.model.data.TestAccountProvider;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

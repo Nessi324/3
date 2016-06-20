@@ -1,4 +1,7 @@
+package de.bht.fpa.mail.gruppe6.model.data;
 
+
+import de.bht.fpa.mail.gruppe6.model.data.Folder;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,13 +11,13 @@ import java.util.List;
  * for the accounts can be found and is able to produce some test accounts. 
  * @author Simone Strippgen
  */
-class TestAccountProvider {
+public class TestAccountProvider {
 
 //  directory (relative to project) where the corresponding email folders can be found
     public static final File TESTDATA_HOME = new File("TestData");
 
     /**
-     * @eturn a list of accounts, with top folder paths which
+     * @return a list of accounts, with top folder paths which
      * refer to the folder with the testdata.
      */
     public static List<Account> createAccounts() {

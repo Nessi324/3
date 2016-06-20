@@ -1,4 +1,6 @@
+package de.bht.fpa.mail.gruppe6.model.applicationLogic;
 
+import de.bht.fpa.mail.gruppe6.model.data.Account;
 import java.util.List;
 
 /*
