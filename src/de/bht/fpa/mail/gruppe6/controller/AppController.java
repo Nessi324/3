@@ -7,7 +7,6 @@ import javafx.scene.control.*;
 import javafx.stage.*;
 import de.bht.fpa.mail.gruppe6.model.data.Component;
 import de.bht.fpa.mail.gruppe6.model.data.Email;
-import de.bht.fpa.mail.gruppe6.model.data.Email.Importance;
 import de.bht.fpa.mail.gruppe6.model.data.Folder;
 import java.io.*;
 import java.text.ParseException;
@@ -54,6 +53,26 @@ public class AppController implements Initializable {
     private TextArea textarea;
     @FXML
     private TextFlow textflow;
+    @FXML
+    private Menu openacc;
+    @FXML
+    private Menu account;
+    @FXML
+    private MenuItem newacc;
+    @FXML
+    private MenuItem account1;
+    @FXML
+    private MenuItem account2;
+    @FXML
+    private MenuItem account3;
+    @FXML
+    private MenuItem editacc;
+    @FXML
+    private MenuItem edit1;
+    @FXML
+    private MenuItem edit2;
+    @FXML
+    private MenuItem edit3;
 
     private File startDirectory = new File(System.getProperty("user.home"));
     private TreeItem<Component> rootNode;
@@ -62,12 +81,12 @@ public class AppController implements Initializable {
     private final Image open = new Image(getClass().getResourceAsStream("/de/bht/fpa/mail/gruppe6/pic/open.png"));
     private final Image close = new Image(getClass().getResourceAsStream("/de/bht/fpa/mail/gruppe6/pic/closed.png"));
     public static ObservableList<Email> tableinfo;
-    public ApplicationLogicIF app;
+    public ApplicationLogicIF appIF;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        appIF = new ApplicationLogic();
         numberOfMails.setText("0");
-        app = new ApplicationLogic();
         configureTree(startDirectory);
         searchField.textProperty().addListener((e) -> filterList());
         inItMenue();
@@ -75,7 +94,21 @@ public class AppController implements Initializable {
     }
 
     private void inItMenue() {
+        account1.setText(appIF.getAllAccounts().get(0));
+        account2.setText(appIF.getAllAccounts().get(1));
+        account3.setText(appIF.getAllAccounts().get(2));
+        edit1.setText(appIF.getAllAccounts().get(0));
+        edit2.setText(appIF.getAllAccounts().get(1));
+        edit3.setText(appIF.getAllAccounts().get(2));
         configureMenue(file, (e) -> handleAll(e));
+        configureMenue(account, (e) -> handleAll(e));
+        configureMenue(openacc, (e) -> handleAll(e));
+        account1.setOnAction((value) -> accountAction(account1.getText()));
+        account2.setOnAction((value) -> appIF.openAccount(account2.getText()));
+        account3.setOnAction((value) -> appIF.openAccount(account3.getText()));
+        edit1.setOnAction((value) -> openAccountWindow(edit1.getText()));
+        edit2.setOnAction((value) -> openAccountWindow(edit2.getText()));
+        edit3.setOnAction((value) -> openAccountWindow(edit3.getText()));
     }
 
     public void configureMenue(Menu menu, EventHandler<ActionEvent> handler) {
@@ -88,6 +121,7 @@ public class AppController implements Initializable {
 
     public void handleAll(ActionEvent e) {
         MenuItem it = (MenuItem) e.getSource();
+        String modus = null;
         if (it instanceof MenuItem) {
             switch (it.getText()) {
                 case "Open":
@@ -98,21 +132,26 @@ public class AppController implements Initializable {
                     break;
                 case "Save":
                     saveEmailDirectoryChooser();
+                    break;
+                case "New Account":
+                    openAccountWindow(modus);
+                    break;
+
             }
         }
     }
 
     /**
      * saveEmailDirectoryChooser öffnet ein Fenster mit Verzeichnissen, damit
-     * wir aussuchen können wo wir die Emails speichern wollen.
-     * Und speichert dann diese mit der App.
+     * wir aussuchen können wo wir die Emails speichern wollen. Und speichert
+     * dann diese mit der App.
      */
     private void saveEmailDirectoryChooser() {
         Stage stage = new Stage();
         stage.setTitle("Open New Directory");
         DirectoryChooser fs = new DirectoryChooser();
         File file = fs.showDialog(stage);
-        app.saveEmails(file);
+        appIF.saveEmails(file);
     }
 
     /**
@@ -123,7 +162,7 @@ public class AppController implements Initializable {
         if (treeitem != null) {
             tableview.getItems().clear();
             Folder f = (Folder) treeitem.getValue();
-            app.loadEmails(f);
+            appIF.loadEmails(f);
             for (Email x : f.getEmails()) {
                 if (x != null && f.getEmails().size() > 0) {
                     tableinfo.add(x);
@@ -142,7 +181,7 @@ public class AppController implements Initializable {
      */
     private void filterList() {
         String pattern = searchField.getText();
-        ObservableList<Email> liste = FXCollections.observableArrayList(app.search(pattern));
+        ObservableList<Email> liste = FXCollections.observableArrayList(appIF.search(pattern));
         tableview.setItems(liste);
         //gibt auch bei der Suche regelmäßig die Anzahl der Emails an
         numberOfMails.setText(tableview.getItems().size() + "");
@@ -157,9 +196,9 @@ public class AppController implements Initializable {
             //textflow ist ein simplerer Weg als mehrere Labels zu setzen
             textflow.getChildren().clear();
             Text text = new Text(
-                       newValue.getSender() + "\n"
+                    newValue.getSender() + "\n"
                     + newValue.getSubject() + "\n"
-                    + newValue.getReceived()+ "\n"
+                    + newValue.getReceived() + "\n"
                     + newValue.getReceiver()
             );
             text.setFont(Font.font("System", FontWeight.NORMAL, 12));
@@ -185,8 +224,8 @@ public class AppController implements Initializable {
     }
 
     public void configureTree(File file) {
-        app.changeDirectory(file);
-        Component component = app.getTopFolder();
+        appIF.changeDirectory(file);
+        Component component = appIF.getTopFolder();
         rootNode = new TreeItem<Component>(component);
         ImageView image = new ImageView(open);
         rootNode.setGraphic(image);
@@ -263,6 +302,11 @@ public class AppController implements Initializable {
         configureTree(file);
     }
 
+    public void accountAction(String name) {
+        File file = new File("C:\\Users\\Nessi\\Desktop\\3.Semester\\FPA\\fpa10\\TestData", name);
+        configureTree(file);
+    }
+
     /**
      * compare vergleicht 2 Strings, indem er sie in Date Objekte umwandelt und
      * dann einen Wert zurückgibt den wir zur Sortierung der EMail Tabelle
@@ -303,8 +347,27 @@ public class AppController implements Initializable {
         else {
             node.getChildren().remove(loading);
             Folder folder = (Folder) node.getValue();
-            app.loadContent(folder);
+            appIF.loadContent(folder);
             folder.getComponents().forEach((Component c) -> node.getChildren().add(buildTreeNode(c)));
+        }
+    }
+
+    public void openAccountWindow(String modus) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/de/bht/fpa/mail/gruppe6/view/AccountWindow.fxml"));
+            loader.setController(new AccountWindowController(modus, this));
+            Parent root = (Parent) loader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            if (modus == null) {
+                stage.setTitle("New Account");
+            }
+            if (modus != null) {
+                stage.setTitle("Update Account");
+            }
+            stage.show();
+        } catch (IOException ex) {
+            Logger.getLogger(AppController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

@@ -4,13 +4,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author Simone Strippgen
- */
 public class Folder extends Component {
 
-    private ArrayList<Email> emails;
+    private  ArrayList<Email> emails;
     private final ArrayList<Component> content = new ArrayList<Component>();
     private boolean expandable;
     private boolean loaded;

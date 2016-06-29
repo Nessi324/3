@@ -1,16 +1,15 @@
 package de.bht.fpa.mail.gruppe6.model.applicationLogic;
 
 import de.bht.fpa.mail.gruppe6.controller.AppController;
+import de.bht.fpa.mail.gruppe6.model.applicationLogic.xml.XmlEmailStrategy;
 import de.bht.fpa.mail.gruppe6.model.data.Email;
 import de.bht.fpa.mail.gruppe6.model.data.Folder;
 import java.io.File;
-import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.ObservableList;
-import javax.xml.bind.JAXB;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -22,23 +21,15 @@ import javax.xml.bind.Marshaller;
 public class EmailManager {
 
     private Folder currentFolder;
+    public EmailStrategy strategy;
 
     public EmailManager() {
+    strategy = new XmlEmailStrategy();
     }
 
     public void loadEmails(Folder f) {
-        if (f != null && f.getEmails().isEmpty() && f.getPath().length() > 0) {
-            f.setLoaded();
-            File file = new File(f.getPath());
-            FileFilter filter = (File name) -> name.getName().endsWith(".xml");
-            for (File x : file.listFiles(filter)) {
-                Email email = JAXB.unmarshal(x, Email.class);
-                if (!email.toString().contains("false")) {
-                    f.addEmail(email);
-                }
-            }
-            currentFolder = f;
-        }
+    strategy.loadEmails(f);
+    currentFolder = f;
     }
 
     public void saveEmails(File file) {
@@ -69,5 +60,9 @@ public class EmailManager {
             }
         }
         return ersatz;
+    }
+
+    public void setEmailStrategy(EmailStrategy strategy) {
+        this.strategy = strategy;
     }
 }
