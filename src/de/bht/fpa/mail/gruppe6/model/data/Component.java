@@ -15,6 +15,7 @@ public abstract class Component implements Serializable {
     @Id
     @GeneratedValue
     private long id;
+    
     private String path;
     private String name;
 

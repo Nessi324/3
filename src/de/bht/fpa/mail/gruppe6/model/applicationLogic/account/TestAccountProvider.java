@@ -28,7 +28,6 @@ public class TestAccountProvider {
         //Sets the path to the corresponding email folder
         Folder folder = new Folder(new File(TESTDATA_HOME, "Walter"), true);
         acc.setTop(folder);
-        System.out.println("Provider Ausgabe: " + acc.getTop());
         accounts.add(acc);
         acc = new Account("Erna", "smtp.gmail.com", "erna@gmail.com", "erna");
         folder = new Folder(new File(TESTDATA_HOME, "Erna"), true);

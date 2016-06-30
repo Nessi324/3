@@ -3,9 +3,11 @@ package de.bht.fpa.mail.gruppe6.model.data;
 import de.bht.fpa.mail.gruppe6.model.data.Folder;
 import java.io.File;
 import java.io.Serializable;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Account implements Serializable {
@@ -24,6 +26,7 @@ public class Account implements Serializable {
 
     private String password;
     
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}) 
     private Folder top;
 
     public Account() {

@@ -86,7 +86,6 @@ public class ApplicationLogic implements ApplicationLogicIF {
     public void openAccount(String name) {
         Account account = acc.getAccount(name);
         Folder folder = account.getTop();
-        System.out.println(account.getTop());
         File file = new File(folder.getPath());
         changeDirectory(file);
         account.setTop(getTopFolder());

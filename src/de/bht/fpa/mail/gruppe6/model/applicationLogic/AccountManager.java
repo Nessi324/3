@@ -14,7 +14,7 @@ public class AccountManager implements AccountManagerIF {
     public AccountManager() {
         accountDB = new AccountDBDAO();
         //accountDB = new AccountFileDAO();
-        accountList = accountDB.getAllAccounts();
+        //accountList = accountDB.getAllAccounts();
     }
 
     /**

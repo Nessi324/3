@@ -18,14 +18,15 @@ public class Folder extends Component {
     @Transient
     private boolean loaded;
 
-
     public Folder(File path, boolean expandable) {
         super(path);
         emails = new ArrayList<Email>();
         this.expandable = expandable;
     }
 
-    public Folder() {}
+    public Folder() {
+    }
+
     @Override
     public void addComponent(Component comp) {
         content.add(comp);

@@ -82,7 +82,6 @@ public class AppController implements Initializable {
     private final Image close = new Image(getClass().getResourceAsStream("/de/bht/fpa/mail/gruppe6/pic/closed.png"));
     public static ObservableList<Email> tableinfo;
     public ApplicationLogicIF appIF;
-    private List<String> list = appIF.getAllAccounts();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -95,10 +94,21 @@ public class AppController implements Initializable {
     }
 
     private void inItMenue() {
+//        account1.setText(appIF.getAllAccounts().get(0));
+//        account2.setText(appIF.getAllAccounts().get(1));
+//        account3.setText(appIF.getAllAccounts().get(2));
+//        edit1.setText(appIF.getAllAccounts().get(0));
+//        edit2.setText(appIF.getAllAccounts().get(1));
+//        edit3.setText(appIF.getAllAccounts().get(2));
         configureMenue(file, (e) -> handleAll(e));
         configureMenue(account, (e) -> handleAll(e));
         configureMenue(openacc, (e) -> handleAll(e));
-        configureMenue(editacc, (e) -> handleAll(e));
+        account1.setOnAction((value) -> accountAction(account1.getText()));
+        account2.setOnAction((value) -> accountAction(account2.getText()));
+        account3.setOnAction((value) -> accountAction(account3.getText()));
+        edit1.setOnAction((value) -> openAccountWindow(edit1.getText()));
+        edit2.setOnAction((value) -> openAccountWindow(edit2.getText()));
+        edit3.setOnAction((value) -> openAccountWindow(edit3.getText()));
     }
 
     public void configureMenue(Menu menu, EventHandler<ActionEvent> handler) {
@@ -111,7 +121,6 @@ public class AppController implements Initializable {
 
     public void handleAll(ActionEvent e) {
         MenuItem it = (MenuItem) e.getSource();
-        Menu parentMenu = it.getParentMenu();
         String modus = null;
         if (it instanceof MenuItem) {
             switch (it.getText()) {
@@ -126,26 +135,6 @@ public class AppController implements Initializable {
                     break;
                 case "New Account":
                     openAccountWindow(modus);
-                    break;
-            
-                default:
-                    if (parentMenu.getText().contains("Edit")) {
-                        openAccountWindow(it.getText());
-                    }
-                    if (parentMenu.getText().contains("Open")) {
-                        accountAction(it.getText());
-                    }
-                    if (parentMenu.getText().contains("Open") ||parentMenu.getText().contains("Edit") ) {
-                        if (it.getText().contains("1")) {
-                            it.setText(list.get(0));
-                        }
-                        else if (it.getText().contains("2")) {
-                            it.setText(list.get(2));
-                        }
-                        else if (it.getText().contains("3")) {
-                            it.setText(list.get(2));
-                        }
-                    }
                     break;
             }
         }

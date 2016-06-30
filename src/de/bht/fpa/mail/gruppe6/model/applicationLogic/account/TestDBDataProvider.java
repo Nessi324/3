@@ -9,18 +9,16 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
 /**
- * This class gets test accounts from TestAccountProvider and saves them
- * into the DB which is specified in the PersistenceUnit. 
- * It can be used to fill a local DB with the test accounts matching the 
- * corresponding account folders.
+ * This class gets test accounts from TestAccountProvider and saves them into
+ * the DB which is specified in the PersistenceUnit. It can be used to fill a
+ * local DB with the test accounts matching the corresponding account folders.
+ *
  * @author Simone Strippgen
  */
-
 public class TestDBDataProvider {
 
-    private static final String TESTDATA_PU = "fpa";
+    private static final String TESTDATA_PU = "account";
     private static EntityManagerFactory emf = Persistence.createEntityManagerFactory(TESTDATA_PU);
-
 
     public static void createAccounts() {
         EntityManager em = emf.createEntityManager();
@@ -29,6 +27,7 @@ public class TestDBDataProvider {
         trans.begin();
         for (Account a : accs) {
             em.persist(a);
+            System.out.println(a.getName());
         }
         trans.commit();
         em.close();

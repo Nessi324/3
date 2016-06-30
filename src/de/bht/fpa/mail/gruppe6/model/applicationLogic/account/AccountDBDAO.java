@@ -10,6 +10,8 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
 
 /**
  *
@@ -17,33 +19,28 @@ import javax.persistence.EntityTransaction;
  */
 public class AccountDBDAO implements AccountDAOIF {
 
-    EntityManagerFactory emf;
+    // EntityManagerFactory emf;
     public AccountDBDAO() {
-    TestDBDataProvider.createAccounts();
+        // emf = Persistence.createEntityManagerFactory("account");
+        TestDBDataProvider.createAccounts();
     }
 
+    @Override
     public List<Account> getAllAccounts() {
-      return null;
+//        EntityManager em = emf.createEntityManager(); 
+//        Query query = em.createQuery("SELECT * FROM accs");
+//        List<Account> List = query.getResultList();
+//        return List;
+        return null;
     }
 
+    @Override
     public Account saveAccount(Account acc) {
-        EntityManager em = emf.createEntityManager();
-        EntityTransaction trans = em.getTransaction();
-        trans.begin();
-        em.persist(acc);
-        trans.commit();
-        em.close();
-        return acc;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-        
-    public void removeAccount(){}
-    
 
+    @Override
     public boolean updateAccount(Account acc) {
-        return false;
-    }
-
-    public void remove(String name, List<Account> list) {
-
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
