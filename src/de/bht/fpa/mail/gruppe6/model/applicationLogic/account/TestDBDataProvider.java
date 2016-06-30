@@ -1,8 +1,5 @@
 package de.bht.fpa.mail.gruppe6.model.applicationLogic.account;
 
-
-
-import de.bht.fpa.mail.gruppe6.model.data.Account;
 import de.bht.fpa.mail.gruppe6.model.applicationLogic.account.TestAccountProvider;
 import de.bht.fpa.mail.gruppe6.model.data.Account;
 import java.util.List;

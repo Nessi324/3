@@ -7,7 +7,7 @@ import java.io.File;
 public class FolderManager {
 
     private Folder folder;
-    public FolderStrategy strategy;
+    public FolderStrategyIF strategy;
     
     public FolderManager(File file) {
         strategy = new FileStrategy();
@@ -26,7 +26,7 @@ public class FolderManager {
         return folder;
     }
     
-    public void setFolderStrategy(FolderStrategy strategy){
+    public void setFolderStrategy(FolderStrategyIF strategy){
     this.strategy = strategy;
     }
 }

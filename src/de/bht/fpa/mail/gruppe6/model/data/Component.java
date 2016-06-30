@@ -3,9 +3,18 @@ package de.bht.fpa.mail.gruppe6.model.data;
 import java.io.File;
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
 
+@Entity
+@Inheritance
 public abstract class Component implements Serializable {
 
+    @Id
+    @GeneratedValue
+    private long id;
     private String path;
     private String name;
 
@@ -13,6 +22,9 @@ public abstract class Component implements Serializable {
         this.path = path.getAbsolutePath();
         this.name = path.getName();
 
+    }
+
+    public Component() {
     }
 
     public void addComponent(Component comp) {

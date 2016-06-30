@@ -1,6 +1,7 @@
 package de.bht.fpa.mail.gruppe6.controller;
 
 import de.bht.fpa.mail.gruppe6.model.applicationLogic.*;
+import de.bht.fpa.mail.gruppe6.model.data.Account;
 import java.net.URL;
 import javafx.event.*;
 import javafx.scene.control.*;
@@ -66,7 +67,7 @@ public class AppController implements Initializable {
     @FXML
     private MenuItem account3;
     @FXML
-    private MenuItem editacc;
+    private Menu editacc;
     @FXML
     private MenuItem edit1;
     @FXML
@@ -74,7 +75,6 @@ public class AppController implements Initializable {
     @FXML
     private MenuItem edit3;
 
-    private File startDirectory = new File(System.getProperty("user.home"));
     private TreeItem<Component> rootNode;
     private static ArrayList<String> historyData = new ArrayList<String>();
     private static final TreeItem<String> loading = new TreeItem<String>();
@@ -82,33 +82,23 @@ public class AppController implements Initializable {
     private final Image close = new Image(getClass().getResourceAsStream("/de/bht/fpa/mail/gruppe6/pic/closed.png"));
     public static ObservableList<Email> tableinfo;
     public ApplicationLogicIF appIF;
+    private List<String> list = appIF.getAllAccounts();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         appIF = new ApplicationLogic();
         numberOfMails.setText("0");
-        configureTree(startDirectory);
+        configureTree();
         searchField.textProperty().addListener((e) -> filterList());
         inItMenue();
         inItTable();
     }
 
     private void inItMenue() {
-        account1.setText(appIF.getAllAccounts().get(0));
-        account2.setText(appIF.getAllAccounts().get(1));
-        account3.setText(appIF.getAllAccounts().get(2));
-        edit1.setText(appIF.getAllAccounts().get(0));
-        edit2.setText(appIF.getAllAccounts().get(1));
-        edit3.setText(appIF.getAllAccounts().get(2));
         configureMenue(file, (e) -> handleAll(e));
         configureMenue(account, (e) -> handleAll(e));
         configureMenue(openacc, (e) -> handleAll(e));
-        account1.setOnAction((value) -> accountAction(account1.getText()));
-        account2.setOnAction((value) -> appIF.openAccount(account2.getText()));
-        account3.setOnAction((value) -> appIF.openAccount(account3.getText()));
-        edit1.setOnAction((value) -> openAccountWindow(edit1.getText()));
-        edit2.setOnAction((value) -> openAccountWindow(edit2.getText()));
-        edit3.setOnAction((value) -> openAccountWindow(edit3.getText()));
+        configureMenue(editacc, (e) -> handleAll(e));
     }
 
     public void configureMenue(Menu menu, EventHandler<ActionEvent> handler) {
@@ -121,6 +111,7 @@ public class AppController implements Initializable {
 
     public void handleAll(ActionEvent e) {
         MenuItem it = (MenuItem) e.getSource();
+        Menu parentMenu = it.getParentMenu();
         String modus = null;
         if (it instanceof MenuItem) {
             switch (it.getText()) {
@@ -136,7 +127,26 @@ public class AppController implements Initializable {
                 case "New Account":
                     openAccountWindow(modus);
                     break;
-
+            
+                default:
+                    if (parentMenu.getText().contains("Edit")) {
+                        openAccountWindow(it.getText());
+                    }
+                    if (parentMenu.getText().contains("Open")) {
+                        accountAction(it.getText());
+                    }
+                    if (parentMenu.getText().contains("Open") ||parentMenu.getText().contains("Edit") ) {
+                        if (it.getText().contains("1")) {
+                            it.setText(list.get(0));
+                        }
+                        else if (it.getText().contains("2")) {
+                            it.setText(list.get(2));
+                        }
+                        else if (it.getText().contains("3")) {
+                            it.setText(list.get(2));
+                        }
+                    }
+                    break;
             }
         }
     }
@@ -223,8 +233,7 @@ public class AppController implements Initializable {
         }
     }
 
-    public void configureTree(File file) {
-        appIF.changeDirectory(file);
+    public void configureTree() {
         Component component = appIF.getTopFolder();
         rootNode = new TreeItem<Component>(component);
         ImageView image = new ImageView(open);
@@ -253,15 +262,13 @@ public class AppController implements Initializable {
     }
 
     public void selectDirectory() {
-        Stage stage = new Stage();
-        stage.setTitle("Open New Directory");
         DirectoryChooser fs = new DirectoryChooser();
-        File s = fs.showDialog(stage);
+        File s = fs.showDialog(null);
         if (s != null) {
-            String y = s.toString();
-            fs.setInitialDirectory(s);
+            appIF.changeDirectory(s);
+            String y = s.getAbsolutePath();
             addHistory(y);
-            configureTree(s);
+            configureTree();
         }
     }
 
@@ -299,12 +306,13 @@ public class AppController implements Initializable {
      */
     public void historyAction(String x) {
         File file = new File(x);
-        configureTree(file);
+        appIF.changeDirectory(file);
+        configureTree();
     }
 
     public void accountAction(String name) {
-        File file = new File("C:\\Users\\Nessi\\Desktop\\3.Semester\\FPA\\fpa10\\TestData", name);
-        configureTree(file);
+        appIF.openAccount(name);
+        configureTree();
     }
 
     /**

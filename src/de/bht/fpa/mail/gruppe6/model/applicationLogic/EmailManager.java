@@ -21,7 +21,7 @@ import javax.xml.bind.Marshaller;
 public class EmailManager {
 
     private Folder currentFolder;
-    public EmailStrategy strategy;
+    public EmailStrategyIF strategy;
 
     public EmailManager() {
     strategy = new XmlEmailStrategy();
@@ -62,7 +62,7 @@ public class EmailManager {
         return ersatz;
     }
 
-    public void setEmailStrategy(EmailStrategy strategy) {
+    public void setEmailStrategy(EmailStrategyIF strategy) {
         this.strategy = strategy;
     }
 }

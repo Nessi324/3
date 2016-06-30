@@ -1,17 +1,19 @@
 package de.bht.fpa.mail.gruppe6.model.applicationLogic;
 
 import de.bht.fpa.mail.gruppe6.model.applicationLogic.account.AccountDAOIF;
+import de.bht.fpa.mail.gruppe6.model.applicationLogic.account.AccountDBDAO;
 import de.bht.fpa.mail.gruppe6.model.applicationLogic.account.AccountFileDAO;
 import java.util.List;
 import de.bht.fpa.mail.gruppe6.model.data.Account;
 
-public class AccountManager {
+public class AccountManager implements AccountManagerIF {
 
     private AccountDAOIF accountDB;
     private List<Account> accountList;
 
     public AccountManager() {
-        accountDB= new AccountFileDAO();
+        accountDB = new AccountDBDAO();
+        //accountDB = new AccountFileDAO();
         accountList = accountDB.getAllAccounts();
     }
 
@@ -54,6 +56,6 @@ public class AccountManager {
      * @return true if update was successful.
      */
     public boolean updateAccount(Account account) {
-      return  accountDB.updateAccount(account);
+        return accountDB.updateAccount(account);
     }
 }

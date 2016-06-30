@@ -11,7 +11,7 @@ import de.bht.fpa.mail.gruppe6.model.data.Folder;
  *
  * @author Nessi
  */
-public interface EmailStrategy {
+public interface EmailStrategyIF {
 
     public void loadEmails(Folder f);
 }

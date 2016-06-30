@@ -1,6 +1,5 @@
 package de.bht.fpa.mail.gruppe6.model.applicationLogic.account;
 
-
 import de.bht.fpa.mail.gruppe6.model.data.Account;
 import de.bht.fpa.mail.gruppe6.model.data.Folder;
 import de.bht.fpa.mail.gruppe6.model.data.Folder;
@@ -9,8 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This class contains the name of the directory where the testdata
- * for the accounts can be found and is able to produce some test accounts. 
+ * This class contains the name of the directory where the testdata for the
+ * accounts can be found and is able to produce some test accounts.
+ *
  * @author Simone Strippgen
  */
 public class TestAccountProvider {
@@ -19,8 +19,8 @@ public class TestAccountProvider {
     public static final File TESTDATA_HOME = new File("TestData");
 
     /**
-     * @return a list of accounts, with top folder paths which
-     * refer to the folder with the testdata.
+     * @return a list of accounts, with top folder paths which refer to the
+     * folder with the testdata.
      */
     public static List<Account> createAccounts() {
         List<Account> accounts = new ArrayList<Account>();
@@ -28,6 +28,7 @@ public class TestAccountProvider {
         //Sets the path to the corresponding email folder
         Folder folder = new Folder(new File(TESTDATA_HOME, "Walter"), true);
         acc.setTop(folder);
+        System.out.println("Provider Ausgabe: " + acc.getTop());
         accounts.add(acc);
         acc = new Account("Erna", "smtp.gmail.com", "erna@gmail.com", "erna");
         folder = new Folder(new File(TESTDATA_HOME, "Erna"), true);

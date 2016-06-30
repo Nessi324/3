@@ -5,18 +5,18 @@
  */
 package de.bht.fpa.mail.gruppe6.model.applicationLogic.xml;
 
-import de.bht.fpa.mail.gruppe6.model.applicationLogic.EmailStrategy;
 import de.bht.fpa.mail.gruppe6.model.data.Email;
 import de.bht.fpa.mail.gruppe6.model.data.Folder;
 import java.io.File;
 import java.io.FileFilter;
 import javax.xml.bind.JAXB;
+import de.bht.fpa.mail.gruppe6.model.applicationLogic.EmailStrategyIF;
 
 /**
  *
  * @author Nessi
  */
-public class XmlEmailStrategy implements EmailStrategy{
+public class XmlEmailStrategy implements EmailStrategyIF{
 
     public XmlEmailStrategy() {
     }
