@@ -82,7 +82,7 @@ public class AppController implements Initializable {
     private final Image close = new Image(getClass().getResourceAsStream("/de/bht/fpa/mail/gruppe6/pic/closed.png"));
     public static ObservableList<Email> tableinfo;
     public ApplicationLogicIF appIF;
-
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         appIF = new ApplicationLogic();
@@ -94,12 +94,13 @@ public class AppController implements Initializable {
     }
 
     private void inItMenue() {
-//        account1.setText(appIF.getAllAccounts().get(0));
-//        account2.setText(appIF.getAllAccounts().get(1));
-//        account3.setText(appIF.getAllAccounts().get(2));
-//        edit1.setText(appIF.getAllAccounts().get(0));
-//        edit2.setText(appIF.getAllAccounts().get(1));
-//        edit3.setText(appIF.getAllAccounts().get(2));
+        List<String> list = appIF.getAllAccounts();
+        account1.setText(list.get(0));
+        account2.setText(list.get(1));
+        account3.setText(list.get(2));
+        edit1.setText(list.get(0));
+        edit2.setText(list.get(1));
+        edit3.setText(list.get(2));
         configureMenue(file, (e) -> handleAll(e));
         configureMenue(account, (e) -> handleAll(e));
         configureMenue(openacc, (e) -> handleAll(e));

@@ -7,6 +7,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -15,7 +16,7 @@ public class Account implements Serializable {
     @Id
     @GeneratedValue
     private long id;
-    
+
     private static final long serialVersionUID = -7660640539811469762L;
 
     private String name;
@@ -94,4 +95,12 @@ public class Account implements Serializable {
         this.top = top;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getId() {
+        return id;
+    }
+    
 }

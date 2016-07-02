@@ -65,4 +65,5 @@ public class Folder extends Component {
         }
         return getName();
     }
+    
 }

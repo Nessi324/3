@@ -14,7 +14,7 @@ public class AccountManager implements AccountManagerIF {
     public AccountManager() {
         accountDB = new AccountDBDAO();
         //accountDB = new AccountFileDAO();
-        //accountList = accountDB.getAllAccounts();
+        accountList = accountDB.getAllAccounts();
     }
 
     /**
@@ -46,7 +46,9 @@ public class AccountManager implements AccountManagerIF {
      * @param account the account that should be saved
      */
     public void saveAccount(Account acc) {
-        accountDB.saveAccount(acc);
+        if (!accountList.contains(acc)) {
+            accountDB.saveAccount(acc);
+        }
     }
 
     /**

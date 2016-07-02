@@ -40,11 +40,11 @@ public class AccountWindowController implements Initializable {
     public AccountWindowController(String modus, AppController aThis) {
         this.modus = modus;
         app = aThis;
+        logicIF = new ApplicationLogic();
     }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        logicIF = new ApplicationLogic();
         if (modus == null) {
             inItSave();
         }
@@ -76,7 +76,7 @@ public class AccountWindowController implements Initializable {
                 logicIF.updateAccount(newaccount);
                 close();
             }
-            if (!logicIF.saveAccount(newaccount)){
+            if (!logicIF.saveAccount(newaccount)) {
                 errorMessage(1);
             }
         }
@@ -100,12 +100,12 @@ public class AccountWindowController implements Initializable {
         host.setText(hostacc);
         username.setText(usernameacc);
         password.setText(passwordacc);
-        cancelacc.setText("update");
+        saveacc.setText("update");
         saveacc.setOnAction((value) -> createAccount());
     }
 
     private void inItSave() {
+        saveacc.setText("save");
         saveacc.setOnAction((value) -> createAccount());
-        cancelacc.setText("save");
     }
 }

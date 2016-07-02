@@ -29,6 +29,7 @@ public class TestDBDataProvider {
             em.persist(a);
             System.out.println(a.getName());
         }
+
         trans.commit();
         em.close();
     }
