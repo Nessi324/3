@@ -82,10 +82,12 @@ public class AppController implements Initializable {
     private final Image close = new Image(getClass().getResourceAsStream("/de/bht/fpa/mail/gruppe6/pic/closed.png"));
     public static ObservableList<Email> tableinfo;
     public ApplicationLogicIF appIF;
-    
+    private List<String> list;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         appIF = new ApplicationLogic();
+        list = appIF.getAllAccounts();
         numberOfMails.setText("0");
         configureTree();
         searchField.textProperty().addListener((e) -> filterList());
@@ -94,7 +96,7 @@ public class AppController implements Initializable {
     }
 
     private void inItMenue() {
-        List<String> list = appIF.getAllAccounts();
+        System.out.println(list);
         account1.setText(list.get(0));
         account2.setText(list.get(1));
         account3.setText(list.get(2));
@@ -104,12 +106,6 @@ public class AppController implements Initializable {
         configureMenue(file, (e) -> handleAll(e));
         configureMenue(account, (e) -> handleAll(e));
         configureMenue(openacc, (e) -> handleAll(e));
-        account1.setOnAction((value) -> accountAction(account1.getText()));
-        account2.setOnAction((value) -> accountAction(account2.getText()));
-        account3.setOnAction((value) -> accountAction(account3.getText()));
-        edit1.setOnAction((value) -> openAccountWindow(edit1.getText()));
-        edit2.setOnAction((value) -> openAccountWindow(edit2.getText()));
-        edit3.setOnAction((value) -> openAccountWindow(edit3.getText()));
     }
 
     public void configureMenue(Menu menu, EventHandler<ActionEvent> handler) {
@@ -123,6 +119,12 @@ public class AppController implements Initializable {
     public void handleAll(ActionEvent e) {
         MenuItem it = (MenuItem) e.getSource();
         String modus = null;
+        if (it.getParentMenu().equals(openacc)) {
+        accountAction(it.getText());
+        }
+        if(it.getParentMenu().equals(editacc)){
+        openAccountWindow(it.getText());
+        }
         if (it instanceof MenuItem) {
             switch (it.getText()) {
                 case "Open":
@@ -138,6 +140,7 @@ public class AppController implements Initializable {
                     openAccountWindow(modus);
                     break;
             }
+
         }
     }
 

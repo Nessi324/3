@@ -18,7 +18,7 @@ import javax.persistence.Persistence;
 public class TestDBDataProvider {
 
     private static final String TESTDATA_PU = "account";
-    private static EntityManagerFactory emf = Persistence.createEntityManagerFactory(TESTDATA_PU);
+    public static EntityManagerFactory emf = Persistence.createEntityManagerFactory(TESTDATA_PU);
 
     public static void createAccounts() {
         EntityManager em = emf.createEntityManager();
@@ -29,7 +29,6 @@ public class TestDBDataProvider {
             em.persist(a);
             System.out.println(a.getName());
         }
-
         trans.commit();
         em.close();
     }

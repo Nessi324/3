@@ -66,18 +66,19 @@ public class AccountWindowController implements Initializable {
     }
 
     private void createAccount() {
+
+        if (logicIF.getAccount(modus) != null) {
+            errorMessage(1);
+        }
         if (!name.getText().isEmpty() && !host.getText().isEmpty() && !username.getText().isEmpty() && !password.getText().isEmpty()) {
             Account newaccount = new Account(name.getText(), host.getText(), username.getText(), password.getText());
-            if (logicIF.saveAccount(newaccount) && modus == null) {
+            if (modus == null) {
                 logicIF.saveAccount(newaccount);
                 close();
             }
             if (modus != null) {
                 logicIF.updateAccount(newaccount);
                 close();
-            }
-            if (!logicIF.saveAccount(newaccount)) {
-                errorMessage(1);
             }
         }
         else {

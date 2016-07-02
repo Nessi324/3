@@ -1,14 +1,25 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package de.bht.fpa.mail.gruppe6.model.applicationLogic.imap;
+
+import de.bht.fpa.mail.gruppe6.model.applicationLogic.EmailStrategyIF;
+import de.bht.fpa.mail.gruppe6.model.data.Account;
+import de.bht.fpa.mail.gruppe6.model.data.Folder;
 
 /**
  *
  * @author Nessi
  */
-public class ImapEmailStrategy {
-    
+public class ImapEmailStrategy implements EmailStrategyIF {
+
+    Account acc;
+
+    public ImapEmailStrategy(Account acc) {
+        this.acc = acc;
+
+    }
+
+    @Override
+    public void loadEmails(Folder f) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

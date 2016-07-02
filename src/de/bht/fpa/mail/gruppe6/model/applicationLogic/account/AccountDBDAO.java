@@ -23,8 +23,9 @@ public class AccountDBDAO implements AccountDAOIF {
 
     public AccountDBDAO() {
         emf = Persistence.createEntityManagerFactory("account");
+        TestDBDataProvider.createAccounts();
     }
-
+    
     @Override
     public List<Account> getAllAccounts() {
         List<Account> List = null;
