@@ -24,12 +24,13 @@ public class EmailManager {
     public EmailStrategyIF strategy;
 
     public EmailManager() {
-    strategy = new XmlEmailStrategy();
+        strategy = new XmlEmailStrategy();
+       // strategy = new ImapEmailStrategy();
     }
 
     public void loadEmails(Folder f) {
-    strategy.loadEmails(f);
-    currentFolder = f;
+        strategy.loadEmails(f);
+        currentFolder = f;
     }
 
     public void saveEmails(File file) {

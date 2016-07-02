@@ -126,20 +126,8 @@
         <menus>
           <Menu fx:id="account" mnemonicParsing="false" text="Account">
                <items>
-                  <Menu fx:id="openacc" mnemonicParsing="false" text="Open Account">
-                    <items>
-                      <MenuItem fx:id="account1" mnemonicParsing="false" text="account" />
-                        <MenuItem fx:id="account2" mnemonicParsing="false" text="account2" />
-                        <MenuItem fx:id="account3" mnemonicParsing="false" text="account3" />
-                    </items>
-                  </Menu>
-                  <Menu fx:id="editacc" mnemonicParsing="false" text="Edit Account">
-                     <items>
-                        <MenuItem fx:id="edit1" mnemonicParsing="false" text="account" />
-                        <MenuItem fx:id="edit2" mnemonicParsing="false" text="account2" />
-                        <MenuItem fx:id="edit3" mnemonicParsing="false" text="account3" />
-                     </items>
-                  </Menu>
+                  <Menu fx:id="openacc" mnemonicParsing="false" text="Open Account" />
+                  <Menu fx:id="editacc" mnemonicParsing="false" text="Edit Account" />
                   <MenuItem fx:id="newacc" mnemonicParsing="false" text="New Account" />
                </items></Menu>
           <Menu fx:id="file" mnemonicParsing="false" text="File">

@@ -19,7 +19,7 @@ import javax.persistence.Query;
  */
 public class AccountDBDAO implements AccountDAOIF {
 
-    EntityManagerFactory emf;
+    private static EntityManagerFactory emf;
 
     public AccountDBDAO() {
         emf = Persistence.createEntityManagerFactory("account");
@@ -28,10 +28,9 @@ public class AccountDBDAO implements AccountDAOIF {
     
     @Override
     public List<Account> getAllAccounts() {
-        List<Account> List = null;
         EntityManager em = emf.createEntityManager();
-        Query query = em.createQuery("select account from Account account");
-        List = query.getResultList();
+        Query query = em.createQuery("select a from Account a");
+        List<Account> List = query.getResultList();
         System.out.println(List);
         return List;
     }
@@ -52,7 +51,7 @@ public class AccountDBDAO implements AccountDAOIF {
         EntityManager em = emf.createEntityManager();
         EntityTransaction trans = em.getTransaction();
         trans.begin();
-        acc = em.merge(acc);
+        em.merge(acc);
         trans.commit();
         em.close();
         return true;

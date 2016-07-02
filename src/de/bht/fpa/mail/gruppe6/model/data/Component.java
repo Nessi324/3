@@ -15,17 +15,17 @@ public abstract class Component implements Serializable {
     @Id
     @GeneratedValue
     private long id;
-    
+
     private String path;
     private String name;
+
+    public Component() {
+    }
 
     public Component(File path) {
         this.path = path.getAbsolutePath();
         this.name = path.getName();
 
-    }
-
-    public Component() {
     }
 
     public void addComponent(Component comp) {

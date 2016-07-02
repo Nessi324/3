@@ -40,11 +40,11 @@ public class AccountWindowController implements Initializable {
     public AccountWindowController(String modus, AppController aThis) {
         this.modus = modus;
         app = aThis;
-        logicIF = new ApplicationLogic();
     }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        logicIF = new ApplicationLogic();
         if (modus == null) {
             inItSave();
         }
@@ -52,33 +52,24 @@ public class AccountWindowController implements Initializable {
             inItEdit();
         }
         cancelacc.setOnAction((value) -> close());
+        saveacc.setOnAction((value) -> createAccount());
         errortext.setVisible(false);
     }
 
-    private void errorMessage(int x) {
-        if (x == 0) {
-            errortext.setText("Alle Felder brauchen Daten.");
-        }
-        if (x == 1) {
-            errortext.setText("Account Namens " + name.getText() + " existiert bereits.");
-        }
-        errortext.setVisible(true);
-    }
-
     private void createAccount() {
-
-        if (logicIF.getAccount(modus) != null) {
-            errorMessage(1);
-        }
         if (!name.getText().isEmpty() && !host.getText().isEmpty() && !username.getText().isEmpty() && !password.getText().isEmpty()) {
             Account newaccount = new Account(name.getText(), host.getText(), username.getText(), password.getText());
-            if (modus == null) {
+            
+            if (logicIF.saveAccount(newaccount) && modus == null) {
                 logicIF.saveAccount(newaccount);
                 close();
             }
             if (modus != null) {
                 logicIF.updateAccount(newaccount);
                 close();
+            }
+            if (!logicIF.saveAccount(newaccount)) {
+                errorMessage(1);
             }
         }
         else {
@@ -101,12 +92,25 @@ public class AccountWindowController implements Initializable {
         host.setText(hostacc);
         username.setText(usernameacc);
         password.setText(passwordacc);
+        Stage stage = (Stage) saveacc.getScene().getWindow();
+        stage.setTitle("Update Account");
         saveacc.setText("update");
-        saveacc.setOnAction((value) -> createAccount());
     }
 
     private void inItSave() {
+        Stage stage = (Stage) saveacc.getScene().getWindow();
+        stage.setTitle("New Account");
         saveacc.setText("save");
-        saveacc.setOnAction((value) -> createAccount());
     }
+    
+    private void errorMessage(int x) {
+        if (x == 0) {
+            errortext.setText("Alle Felder brauchen Daten.");
+        }
+        if (x == 1) {
+            errortext.setText("Account Namens " + name.getText() + " existiert bereits.");
+        }
+        errortext.setVisible(true);
+    }
+
 }

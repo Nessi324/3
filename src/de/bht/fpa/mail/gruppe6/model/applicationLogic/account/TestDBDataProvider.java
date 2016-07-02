@@ -10,7 +10,7 @@ import javax.persistence.Persistence;
 
 /**
  * This class gets test accounts from TestAccountProvider and saves them into
- * the DB which is specified in the PersistenceUnit. It can be used to fill a
+ the DB which is specified in the PersistenceUnit. It can be used to fill a
  * local DB with the test accounts matching the corresponding account folders.
  *
  * @author Simone Strippgen

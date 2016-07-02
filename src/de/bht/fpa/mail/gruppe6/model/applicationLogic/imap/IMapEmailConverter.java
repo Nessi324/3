@@ -4,8 +4,6 @@ import de.bht.fpa.mail.gruppe6.model.data.Email;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.mail.Address;

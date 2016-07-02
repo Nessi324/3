@@ -1,7 +1,6 @@
 package de.bht.fpa.mail.gruppe6.controller;
 
 import de.bht.fpa.mail.gruppe6.model.applicationLogic.*;
-import de.bht.fpa.mail.gruppe6.model.data.Account;
 import java.net.URL;
 import javafx.event.*;
 import javafx.scene.control.*;
@@ -59,21 +58,7 @@ public class AppController implements Initializable {
     @FXML
     private Menu account;
     @FXML
-    private MenuItem newacc;
-    @FXML
-    private MenuItem account1;
-    @FXML
-    private MenuItem account2;
-    @FXML
-    private MenuItem account3;
-    @FXML
     private Menu editacc;
-    @FXML
-    private MenuItem edit1;
-    @FXML
-    private MenuItem edit2;
-    @FXML
-    private MenuItem edit3;
 
     private TreeItem<Component> rootNode;
     private static ArrayList<String> historyData = new ArrayList<String>();
@@ -82,12 +67,10 @@ public class AppController implements Initializable {
     private final Image close = new Image(getClass().getResourceAsStream("/de/bht/fpa/mail/gruppe6/pic/closed.png"));
     public static ObservableList<Email> tableinfo;
     public ApplicationLogicIF appIF;
-    private List<String> list;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         appIF = new ApplicationLogic();
-        list = appIF.getAllAccounts();
         numberOfMails.setText("0");
         configureTree();
         searchField.textProperty().addListener((e) -> filterList());
@@ -96,15 +79,13 @@ public class AppController implements Initializable {
     }
 
     private void inItMenue() {
-        System.out.println(list);
-        account1.setText(list.get(0));
-        account2.setText(list.get(1));
-        account3.setText(list.get(2));
-        edit1.setText(list.get(0));
-        edit2.setText(list.get(1));
-        edit3.setText(list.get(2));
+        for (String acc : appIF.getAllAccounts()) {
+            openacc.getItems().add(new MenuItem(acc));
+            editacc.getItems().add(new MenuItem(acc));
+        }
         configureMenue(file, (e) -> handleAll(e));
         configureMenue(account, (e) -> handleAll(e));
+        configureMenue(editacc, (e) -> handleAll(e));
         configureMenue(openacc, (e) -> handleAll(e));
     }
 
@@ -119,14 +100,9 @@ public class AppController implements Initializable {
     public void handleAll(ActionEvent e) {
         MenuItem it = (MenuItem) e.getSource();
         String modus = null;
-        if (it.getParentMenu().equals(openacc)) {
-        accountAction(it.getText());
-        }
-        if(it.getParentMenu().equals(editacc)){
-        openAccountWindow(it.getText());
-        }
         if (it instanceof MenuItem) {
             switch (it.getText()) {
+
                 case "Open":
                     selectDirectory();
                     break;
@@ -141,6 +117,12 @@ public class AppController implements Initializable {
                     break;
             }
 
+        }
+        if (it.getParentMenu() == editacc) {
+            openAccountWindow(it.getText());
+        }
+        if (it.getParentMenu() == openacc) {
+            accountAction(it.getText());
         }
     }
 
@@ -360,12 +342,6 @@ public class AppController implements Initializable {
             Parent root = (Parent) loader.load();
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
-            if (modus == null) {
-                stage.setTitle("New Account");
-            }
-            if (modus != null) {
-                stage.setTitle("Update Account");
-            }
             stage.show();
         } catch (IOException ex) {
             Logger.getLogger(AppController.class.getName()).log(Level.SEVERE, null, ex);

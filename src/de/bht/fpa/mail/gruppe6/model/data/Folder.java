@@ -13,7 +13,7 @@ public class Folder extends Component {
     private ArrayList<Email> emails;
     @Transient
     private final ArrayList<Component> content = new ArrayList<Component>();
-    @Transient
+
     private boolean expandable;
     @Transient
     private boolean loaded;
