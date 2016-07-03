@@ -22,10 +22,10 @@ public class AccountDBDAO implements AccountDAOIF {
     private static EntityManagerFactory emf;
 
     public AccountDBDAO() {
-        emf = Persistence.createEntityManagerFactory("account");
         TestDBDataProvider.createAccounts();
+        emf = Persistence.createEntityManagerFactory("account");
     }
-    
+
     @Override
     public List<Account> getAllAccounts() {
         EntityManager em = emf.createEntityManager();

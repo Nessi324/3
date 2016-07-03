@@ -102,7 +102,6 @@ public class AppController implements Initializable {
         String modus = null;
         if (it instanceof MenuItem) {
             switch (it.getText()) {
-
                 case "Open":
                     selectDirectory();
                     break;
@@ -115,15 +114,20 @@ public class AppController implements Initializable {
                 case "New Account":
                     openAccountWindow(modus);
                     break;
+                default:
+                    if (it.getParentMenu() == editacc) {
+                        System.out.println("YEAH \n "+ it.getText());
+                        openAccountWindow(it.getText());
+                    }
+                    if (it.getParentMenu() == openacc) {
+                        
+                        System.out.println("YEAH \n "+ it.getText());
+                        accountAction(it.getText());
+                    }
+                    break;
             }
+        }
 
-        }
-        if (it.getParentMenu() == editacc) {
-            openAccountWindow(it.getText());
-        }
-        if (it.getParentMenu() == openacc) {
-            accountAction(it.getText());
-        }
     }
 
     /**

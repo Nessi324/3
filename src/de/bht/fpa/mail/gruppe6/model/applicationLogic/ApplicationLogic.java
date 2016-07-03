@@ -15,7 +15,7 @@ public class ApplicationLogic implements ApplicationLogicIF {
     private static File startDirectory = new File(System.getProperty("user.home"));
 
     public ApplicationLogic() {
-        acc = (AccountManagerIF) new AccountManager();
+        acc = new AccountManager();
         mails = new EmailManager();
         folder = new FolderManager(startDirectory);
     }

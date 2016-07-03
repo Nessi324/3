@@ -12,9 +12,8 @@ public class AccountManager implements AccountManagerIF {
     private List<Account> accountList;
 
     public AccountManager() {
-        accountDB = new AccountDBDAO();
-        //accountDB = new AccountFileDAO();
-        accountList = accountDB.getAllAccounts();
+        //accountDB = new AccountDBDAO();
+        accountDB = new AccountFileDAO();
     }
 
     /**
@@ -36,7 +35,7 @@ public class AccountManager implements AccountManagerIF {
      * @return a list of all account names.
      */
     public List<Account> getAllAccounts() {
-        return accountList;
+        return accountDB.getAllAccounts();
     }
 
     /**
