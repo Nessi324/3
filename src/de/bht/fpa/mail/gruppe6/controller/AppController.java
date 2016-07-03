@@ -85,8 +85,12 @@ public class AppController implements Initializable {
         }
         configureMenue(file, (e) -> handleAll(e));
         configureMenue(account, (e) -> handleAll(e));
-        configureMenue(editacc, (e) -> handleAll(e));
-        configureMenue(openacc, (e) -> handleAll(e));
+        openacc.getItems().get(0).setOnAction((value) -> accountAction(openacc.getItems().get(0).getText()));
+        openacc.getItems().get(1).setOnAction((value) -> accountAction(openacc.getItems().get(1).getText()));
+        openacc.getItems().get(2).setOnAction((value) -> accountAction(openacc.getItems().get(2).getText()));
+        editacc.getItems().get(0).setOnAction((value) -> openAccountWindow(editacc.getItems().get(0).getText()));
+        editacc.getItems().get(1).setOnAction((value) -> openAccountWindow(editacc.getItems().get(1).getText()));
+        editacc.getItems().get(2).setOnAction((value) -> openAccountWindow(editacc.getItems().get(2).getText()));
     }
 
     public void configureMenue(Menu menu, EventHandler<ActionEvent> handler) {
@@ -113,17 +117,6 @@ public class AppController implements Initializable {
                     break;
                 case "New Account":
                     openAccountWindow(modus);
-                    break;
-                default:
-                    if (it.getParentMenu() == editacc) {
-                        System.out.println("YEAH \n "+ it.getText());
-                        openAccountWindow(it.getText());
-                    }
-                    if (it.getParentMenu() == openacc) {
-                        
-                        System.out.println("YEAH \n "+ it.getText());
-                        accountAction(it.getText());
-                    }
                     break;
             }
         }
@@ -181,6 +174,10 @@ public class AppController implements Initializable {
      * Emails gleich sind oder null tut die Methode nichts.
      */
     private void showSelectedEmail(Email oldValue, Email newValue) {
+        if (newValue == null) {
+            textflow.getChildren().clear();
+            textarea.clear();
+        }
         if (oldValue != newValue && newValue != null) {
             //textflow ist ein simplerer Weg als mehrere Labels zu setzen
             textflow.getChildren().clear();

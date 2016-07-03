@@ -7,7 +7,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -27,7 +26,7 @@ public class Account implements Serializable {
 
     private String password;
     
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}) 
+    @OneToOne(cascade = {CascadeType.PERSIST}) 
     private Folder top;
 
     public Account() {
