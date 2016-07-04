@@ -1,6 +1,7 @@
 package de.bht.fpa.mail.gruppe6.controller;
 
 import de.bht.fpa.mail.gruppe6.model.applicationLogic.*;
+import de.bht.fpa.mail.gruppe6.model.data.Account;
 import java.net.URL;
 import javafx.event.*;
 import javafx.scene.control.*;
@@ -85,12 +86,16 @@ public class AppController implements Initializable {
         }
         configureMenue(file, (e) -> handleAll(e));
         configureMenue(account, (e) -> handleAll(e));
-        openacc.getItems().get(0).setOnAction((value) -> accountAction(openacc.getItems().get(0).getText()));
-        openacc.getItems().get(1).setOnAction((value) -> accountAction(openacc.getItems().get(1).getText()));
-        openacc.getItems().get(2).setOnAction((value) -> accountAction(openacc.getItems().get(2).getText()));
-        editacc.getItems().get(0).setOnAction((value) -> openAccountWindow(editacc.getItems().get(0).getText()));
-        editacc.getItems().get(1).setOnAction((value) -> openAccountWindow(editacc.getItems().get(1).getText()));
-        editacc.getItems().get(2).setOnAction((value) -> openAccountWindow(editacc.getItems().get(2).getText()));
+        configureMenue(openacc, (e) -> handleAll(e));
+        configureMenue(editacc, (e) -> handleAll(e));
+        System.out.println(openacc.getItems().get(0).getText());
+        System.out.println(openacc.getItems().get(1).getText());
+        System.out.println(openacc.getItems().get(2).getText());
+        System.out.println(openacc.getItems().get(3).getText());
+        System.out.println(editacc.getItems().get(0).getText());
+        System.out.println(editacc.getItems().get(1).getText());
+        System.out.println(editacc.getItems().get(2).getText());
+        System.out.println(editacc.getItems().get(3).getText());
     }
 
     public void configureMenue(Menu menu, EventHandler<ActionEvent> handler) {
@@ -105,6 +110,14 @@ public class AppController implements Initializable {
         MenuItem it = (MenuItem) e.getSource();
         String modus = null;
         if (it instanceof MenuItem) {
+            switch (it.getParentMenu().getText()) {
+                case "Edit Account":
+                    openAccountWindow(it.getText());
+                    break;
+                case "Open Account":
+                    accountAction(it.getText());
+                    break;
+            }
             switch (it.getText()) {
                 case "Open":
                     selectDirectory();
@@ -291,6 +304,18 @@ public class AppController implements Initializable {
         configureTree();
     }
 
+    public boolean setzeAccount(Account modus, Account account) {
+        if (appIF.getAccount(account.getName()) == null) {
+            if (modus == null) {
+                appIF.saveAccount(account);
+            }
+            if (modus != null) {
+                appIF.updateAccount(account);
+            }
+        }
+        return true;
+    }
+
     /**
      * compare vergleicht 2 Strings, indem er sie in Date Objekte umwandelt und
      * dann einen Wert zurückgibt den wir zur Sortierung der EMail Tabelle
@@ -303,9 +328,11 @@ public class AppController implements Initializable {
             if (t1 != null && t2 != null) {
                 date1 = Email.FORMAT.parse(t1);
                 date2 = Email.FORMAT.parse(t2);
+
             }
         } catch (ParseException ex) {
-            Logger.getLogger(AppController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AppController.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
         return date1.compareTo(date2);
     }
@@ -324,10 +351,8 @@ public class AppController implements Initializable {
     }
 
     public void expandNode(TreeItem<Component> node) {
-        //wenn der Dummy Loading nicht drinne ist kann man es auch nicht expanden
         if (!node.getChildren().get(0).equals(loading)) {
         }
-        //der Dummy ist drinne wir können ihn also entfernen und die Components laden
         else {
             node.getChildren().remove(loading);
             Folder folder = (Folder) node.getValue();
@@ -338,10 +363,17 @@ public class AppController implements Initializable {
 
     public void openAccountWindow(String modus) {
         try {
+            Account account = appIF.getAccount(modus);
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/de/bht/fpa/mail/gruppe6/view/AccountWindow.fxml"));
-            loader.setController(new AccountWindowController(modus, this));
+            loader.setController(new AccountWindowController(account, this));
             Parent root = (Parent) loader.load();
             Stage stage = new Stage();
+            if (modus == null) {
+                stage.setTitle("New Account");
+            }
+            if (modus != null) {
+                stage.setTitle("Update Account");
+            }
             stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException ex) {

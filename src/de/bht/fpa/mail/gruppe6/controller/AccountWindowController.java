@@ -1,7 +1,5 @@
 package de.bht.fpa.mail.gruppe6.controller;
 
-import de.bht.fpa.mail.gruppe6.model.applicationLogic.ApplicationLogic;
-import de.bht.fpa.mail.gruppe6.model.applicationLogic.ApplicationLogicIF;
 import de.bht.fpa.mail.gruppe6.model.data.Account;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -12,10 +10,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-/**
- *
- * @author Nessi
- */
 public class AccountWindowController implements Initializable {
 
     @FXML
@@ -34,42 +28,37 @@ public class AccountWindowController implements Initializable {
     private Label errortext;
 
     private AppController app;
-    private ApplicationLogicIF logicIF;
-    private String modus;
+    private Account account;
 
-    public AccountWindowController(String modus, AppController aThis) {
-        this.modus = modus;
+    public AccountWindowController(Account account, AppController aThis) {
+        this.account = account;
         app = aThis;
     }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        logicIF = new ApplicationLogic();
-        if (modus == null) {
-            inItSave();
-        }
-        if (modus != null) {
-            inItEdit();
-        }
         cancelacc.setOnAction((value) -> close());
         saveacc.setOnAction((value) -> createAccount());
         errortext.setVisible(false);
+        if (account == null) {
+            inItSave();
+        }
+        if (account != null) {
+            inItEdit();
+        }
     }
 
     private void createAccount() {
         if (!name.getText().isEmpty() && !host.getText().isEmpty() && !username.getText().isEmpty() && !password.getText().isEmpty()) {
             Account newaccount = new Account(name.getText(), host.getText(), username.getText(), password.getText());
-            
-            if (logicIF.saveAccount(newaccount) && modus == null) {
-                logicIF.saveAccount(newaccount);
+
+            if (account == null) {
+                app.setzeAccount(null, newaccount);
                 close();
             }
-            if (modus != null) {
-                logicIF.updateAccount(newaccount);
+            if (account != null) {
+                app.setzeAccount(account, newaccount);
                 close();
-            }
-            if (!logicIF.saveAccount(newaccount)) {
-                errorMessage(1);
             }
         }
         else {
@@ -83,34 +72,26 @@ public class AccountWindowController implements Initializable {
     }
 
     private void inItEdit() {
-        String nameacc = logicIF.getAccount(modus).getName();
-        String hostacc = logicIF.getAccount(modus).getHost();
-        String usernameacc = logicIF.getAccount(modus).getUsername();
-        String passwordacc = logicIF.getAccount(modus).getPassword();
+        String nameacc = account.getName();
+        String hostacc = account.getHost();
+        String usernameacc = account.getUsername();
+        String passwordacc = account.getPassword();
         name.setText(nameacc);
         name.setEditable(false);
         host.setText(hostacc);
         username.setText(usernameacc);
         password.setText(passwordacc);
-        Stage stage = (Stage) saveacc.getScene().getWindow();
-        stage.setTitle("Update Account");
         saveacc.setText("update");
     }
 
     private void inItSave() {
-        Stage stage = (Stage) saveacc.getScene().getWindow();
-        stage.setTitle("New Account");
         saveacc.setText("save");
     }
-    
+
     private void errorMessage(int x) {
         if (x == 0) {
             errortext.setText("Alle Felder brauchen Daten.");
         }
-        if (x == 1) {
-            errortext.setText("Account Namens " + name.getText() + " existiert bereits.");
-        }
         errortext.setVisible(true);
     }
-
 }

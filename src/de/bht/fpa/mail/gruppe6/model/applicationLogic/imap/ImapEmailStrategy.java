@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.bht.fpa.mail.gruppe6.model.applicationLogic;
+package de.bht.fpa.mail.gruppe6.model.applicationLogic.imap;
 
+import de.bht.fpa.mail.gruppe6.model.applicationLogic.EmailStrategyIF;
 import de.bht.fpa.mail.gruppe6.model.applicationLogic.imap.IMapConnectionHelper;
 import de.bht.fpa.mail.gruppe6.model.applicationLogic.imap.IMapEmailConverter;
 import de.bht.fpa.mail.gruppe6.model.data.Account;

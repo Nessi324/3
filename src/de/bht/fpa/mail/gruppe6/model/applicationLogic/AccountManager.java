@@ -14,6 +14,7 @@ public class AccountManager implements AccountManagerIF {
     public AccountManager() {
         accountDB = new AccountDBDAO();
         //accountDB = new AccountFileDAO();
+        accountList = accountDB.getAllAccounts();
     }
 
     /**
@@ -22,8 +23,9 @@ public class AccountManager implements AccountManagerIF {
      * @return null If no account with this name exists.
      * @param name name of the account
      */
+    @Override
     public Account getAccount(String name) {
-        for (Account x : this.getAllAccounts()) {
+        for (Account x : accountList) {
             if (x.getName().equals(name)) {
                 return x;
             }
@@ -34,8 +36,9 @@ public class AccountManager implements AccountManagerIF {
     /**
      * @return a list of all account names.
      */
+    @Override
     public List<Account> getAllAccounts() {
-        return accountDB.getAllAccounts();
+        return accountList;
     }
 
     /**
@@ -44,6 +47,7 @@ public class AccountManager implements AccountManagerIF {
      *
      * @param account the account that should be saved
      */
+    @Override
     public void saveAccount(Account acc) {
         if (!accountList.contains(acc)) {
             accountDB.saveAccount(acc);
@@ -56,6 +60,7 @@ public class AccountManager implements AccountManagerIF {
      * @param account the account that should be updated
      * @return true if update was successful.
      */
+    @Override
     public boolean updateAccount(Account account) {
         return accountDB.updateAccount(account);
     }

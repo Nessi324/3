@@ -1,5 +1,7 @@
 package de.bht.fpa.mail.gruppe6.model.applicationLogic;
 
+import de.bht.fpa.mail.gruppe6.model.applicationLogic.imap.ImapEmailStrategy;
+import de.bht.fpa.mail.gruppe6.model.applicationLogic.imap.ImapFolderStrategy;
 import de.bht.fpa.mail.gruppe6.model.data.Account;
 import de.bht.fpa.mail.gruppe6.model.data.Email;
 import de.bht.fpa.mail.gruppe6.model.data.Folder;
@@ -12,6 +14,8 @@ public class ApplicationLogic implements ApplicationLogicIF {
     private FolderManager folder;
     private EmailManager mails;
     private AccountManagerIF acc;
+    private ImapEmailStrategy iMail;
+    private ImapFolderStrategy iFolder;
     private static File startDirectory = new File(System.getProperty("user.home"));
 
     public ApplicationLogic() {
@@ -85,10 +89,11 @@ public class ApplicationLogic implements ApplicationLogicIF {
     @Override
     public void openAccount(String name) {
         Account account = acc.getAccount(name);
+        iMail = new ImapEmailStrategy(account);
+        iFolder = new ImapFolderStrategy(account);
         Folder folder = account.getTop();
         File file = new File(folder.getPath());
         changeDirectory(file);
         account.setTop(getTopFolder());
     }
-
 }

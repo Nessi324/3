@@ -32,6 +32,7 @@ public class AccountDBDAO implements AccountDAOIF {
         Query query = em.createQuery("select a from Account a");
         List<Account> List = query.getResultList();
         System.out.println(List);
+        em.close();
         return List;
     }
 
@@ -51,7 +52,7 @@ public class AccountDBDAO implements AccountDAOIF {
         EntityManager em = emf.createEntityManager();
         EntityTransaction trans = em.getTransaction();
         trans.begin();
-        em.merge(acc);
+        acc = em.merge(acc);
         trans.commit();
         em.close();
         return true;

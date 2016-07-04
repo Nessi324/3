@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.bht.fpa.mail.gruppe6.model.applicationLogic;
+package de.bht.fpa.mail.gruppe6.model.applicationLogic.imap;
 
+import de.bht.fpa.mail.gruppe6.model.applicationLogic.FolderStrategyIF;
 import de.bht.fpa.mail.gruppe6.model.applicationLogic.imap.IMapConnectionHelper;
 import de.bht.fpa.mail.gruppe6.model.data.Account;
 import de.bht.fpa.mail.gruppe6.model.data.Folder;
@@ -34,10 +35,10 @@ public class ImapFolderStrategy implements FolderStrategyIF {
             try {
                 String ff = f.getPath();
                 javax.mail.Folder folder = store.getFolder(ff);
-                File file = new File(f.getPath());
-                System.out.println(f.getPath());
+                File file = new File(folder.getFullName());
                 if(file.listFiles()!=null){
                     for(File fs : file.listFiles()){
+                        f.addComponent(f);
                        // folder.addComponent(new Folder(fs, true));
                     }
                 }
@@ -46,10 +47,4 @@ public class ImapFolderStrategy implements FolderStrategyIF {
             }
         }
     }
-//            File file = new File(f.getPath());
-//            System.out.println(f.getPath());
-//            if (file.listFiles() != null) {
-//                for (File fs : file.listFiles()) {
-//                    if (fs.isDirectory()) {
-//                        f.addComponent(new Folder(fs, hasSubFolder(fs)));
 }
