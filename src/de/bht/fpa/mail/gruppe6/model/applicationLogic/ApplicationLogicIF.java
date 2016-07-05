@@ -9,8 +9,8 @@ import java.util.List;
 
 public interface ApplicationLogicIF {
 
-    Folder getTopFolder();
-
+    Folder getTopFolder(); 
+    
     void loadContent(Folder folder);
 
     List<Email> search(String pattern);

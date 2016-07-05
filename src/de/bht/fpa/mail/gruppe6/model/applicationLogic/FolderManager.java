@@ -25,6 +25,10 @@ public class FolderManager {
     public Folder getTopFolder() {
         return folder;
     }
+
+    public void setTopFolder(Folder folder) {
+        this.folder = folder;
+    }
     
     public void setFolderStrategy(FolderStrategyIF strategy){
     this.strategy = strategy;

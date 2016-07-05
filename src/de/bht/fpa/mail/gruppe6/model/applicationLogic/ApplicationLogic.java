@@ -1,5 +1,6 @@
 package de.bht.fpa.mail.gruppe6.model.applicationLogic;
 
+import de.bht.fpa.mail.gruppe6.controller.AppController;
 import de.bht.fpa.mail.gruppe6.model.applicationLogic.imap.ImapEmailStrategy;
 import de.bht.fpa.mail.gruppe6.model.applicationLogic.imap.ImapFolderStrategy;
 import de.bht.fpa.mail.gruppe6.model.data.Account;
@@ -51,6 +52,11 @@ public class ApplicationLogic implements ApplicationLogicIF {
         }
     }
 
+    public void changeDirectory(Folder folde) {
+        folder.loadContent(folde);
+        
+    }
+
     @Override
     public void saveEmails(File file) {
         mails.saveEmails(file);
@@ -91,9 +97,9 @@ public class ApplicationLogic implements ApplicationLogicIF {
         Account account = acc.getAccount(name);
         iMail = new ImapEmailStrategy(account);
         iFolder = new ImapFolderStrategy(account);
-        Folder folder = account.getTop();
-        File file = new File(folder.getPath());
-        changeDirectory(file);
-        account.setTop(getTopFolder());
+        folder.setTopFolder(iFolder.getTopFolder());
+        mails.setEmailStrategy(iMail);
+        folder.setFolderStrategy(iFolder);
+        folder.loadContent(account.getTop());
     }
 }

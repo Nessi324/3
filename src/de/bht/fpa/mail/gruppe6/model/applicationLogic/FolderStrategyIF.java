@@ -8,5 +8,7 @@ import de.bht.fpa.mail.gruppe6.model.data.Folder;
  */
 public interface FolderStrategyIF {
 
+    Folder getTopFolder();
+
     public void loadContent(Folder f);
 }

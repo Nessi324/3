@@ -35,7 +35,7 @@ public class ImapEmailStrategy implements EmailStrategyIF {
     @Override
     public void loadEmails(Folder f) {
         try {
-            javax.mail.Folder topFolder = store.getDefaultFolder();
+            javax.mail.Folder topFolder = store.getFolder(f.getName());
             topFolder.open(javax.mail.Folder.READ_ONLY);
             Message[] emails = topFolder.getMessages();
             for(Message x : emails){

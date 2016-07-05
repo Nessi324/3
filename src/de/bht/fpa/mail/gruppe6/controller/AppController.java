@@ -80,6 +80,7 @@ public class AppController implements Initializable {
     }
 
     private void inItMenue() {
+
         for (String acc : appIF.getAllAccounts()) {
             openacc.getItems().add(new MenuItem(acc));
             editacc.getItems().add(new MenuItem(acc));
@@ -88,14 +89,6 @@ public class AppController implements Initializable {
         configureMenue(account, (e) -> handleAll(e));
         configureMenue(openacc, (e) -> handleAll(e));
         configureMenue(editacc, (e) -> handleAll(e));
-        System.out.println(openacc.getItems().get(0).getText());
-        System.out.println(openacc.getItems().get(1).getText());
-        System.out.println(openacc.getItems().get(2).getText());
-        System.out.println(openacc.getItems().get(3).getText());
-        System.out.println(editacc.getItems().get(0).getText());
-        System.out.println(editacc.getItems().get(1).getText());
-        System.out.println(editacc.getItems().get(2).getText());
-        System.out.println(editacc.getItems().get(3).getText());
     }
 
     public void configureMenue(Menu menu, EventHandler<ActionEvent> handler) {
@@ -304,16 +297,24 @@ public class AppController implements Initializable {
         configureTree();
     }
 
-    public boolean setzeAccount(Account modus, Account account) {
+    public void setzeAccount(Account modus, Account account) {
+        if (modus != null) {
+            modus.setHost(account.getHost());
+            modus.setPassword(account.getPassword());
+            modus.setUsername(account.getUsername());
+            System.out.println("Der Account "+ modus+ " wurde geupdatet\n\n\n");
+            appIF.updateAccount(modus);
+        }
+
         if (appIF.getAccount(account.getName()) == null) {
             if (modus == null) {
+                System.out.println("Der neue Accout "+ account.getName() +" wurde gesaved\n\n\n");
                 appIF.saveAccount(account);
-            }
-            if (modus != null) {
-                appIF.updateAccount(account);
+                openacc.getItems().add(new MenuItem(account.getName()));
+                editacc.getItems().add(new MenuItem(account.getName()));
+                configureMenue(editacc, (e) -> handleAll(e));
             }
         }
-        return true;
     }
 
     /**
@@ -364,6 +365,7 @@ public class AppController implements Initializable {
     public void openAccountWindow(String modus) {
         try {
             Account account = appIF.getAccount(modus);
+            System.out.println(account);
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/de/bht/fpa/mail/gruppe6/view/AccountWindow.fxml"));
             loader.setController(new AccountWindowController(account, this));
             Parent root = (Parent) loader.load();

@@ -51,15 +51,9 @@ public class AccountWindowController implements Initializable {
     private void createAccount() {
         if (!name.getText().isEmpty() && !host.getText().isEmpty() && !username.getText().isEmpty() && !password.getText().isEmpty()) {
             Account newaccount = new Account(name.getText(), host.getText(), username.getText(), password.getText());
+            app.setzeAccount(account, newaccount);
+            close();
 
-            if (account == null) {
-                app.setzeAccount(null, newaccount);
-                close();
-            }
-            if (account != null) {
-                app.setzeAccount(account, newaccount);
-                close();
-            }
         }
         else {
             errorMessage(0);
@@ -89,6 +83,9 @@ public class AccountWindowController implements Initializable {
     }
 
     private void errorMessage(int x) {
+        if (x == 1) {
+            errortext.setText("Ein Kontakt mit diesem Namen existiert bereits.");
+        }
         if (x == 0) {
             errortext.setText("Alle Felder brauchen Daten.");
         }

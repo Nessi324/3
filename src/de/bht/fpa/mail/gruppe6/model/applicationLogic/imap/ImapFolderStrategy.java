@@ -33,18 +33,32 @@ public class ImapFolderStrategy implements FolderStrategyIF {
     public void loadContent(Folder f) {
         if (f != null) {
             try {
-                String ff = f.getPath();
-                javax.mail.Folder folder = store.getFolder(ff);
-                File file = new File(folder.getFullName());
-                if(file.listFiles()!=null){
-                    for(File fs : file.listFiles()){
-                        f.addComponent(f);
-                       // folder.addComponent(new Folder(fs, true));
+                javax.mail.Folder folder = store.getDefaultFolder();
+                for (javax.mail.Folder x : folder.list()) {
+                    if(x!=null) {
+                        Folder newfolder = new Folder(new File(x.getName()), true);
+                        newfolder.setPath(x.getFullName());
+                        getTopFolder().addComponent(newfolder);
+                        System.out.println(newfolder);
                     }
                 }
             } catch (MessagingException ex) {
                 Logger.getLogger(ImapFolderStrategy.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+
+    @Override
+    public Folder getTopFolder() {
+        try {
+            javax.mail.Folder topFolder = store.getFolder(account.getName());
+            System.out.println(topFolder + " LOADCONTENT\n\n\n");
+            Folder f = new Folder(new File(topFolder.getName()), true);
+            f.setPath(topFolder.getFullName());
+            return f;
+        } catch (MessagingException ex) {
+            Logger.getLogger(ImapFolderStrategy.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 }

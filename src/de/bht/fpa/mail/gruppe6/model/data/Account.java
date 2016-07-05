@@ -26,7 +26,7 @@ public class Account implements Serializable {
 
     private String password;
     
-    @OneToOne(cascade = {CascadeType.PERSIST}) 
+    @OneToOne(cascade = {CascadeType.PERSIST,CascadeType.MERGE, CascadeType.REMOVE})
     private Folder top;
 
     public Account() {

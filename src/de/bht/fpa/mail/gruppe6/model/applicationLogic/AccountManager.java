@@ -25,7 +25,7 @@ public class AccountManager implements AccountManagerIF {
      */
     @Override
     public Account getAccount(String name) {
-        for (Account x : accountList) {
+        for (Account x : accountDB.getAllAccounts()) {
             if (x.getName().equals(name)) {
                 return x;
             }
