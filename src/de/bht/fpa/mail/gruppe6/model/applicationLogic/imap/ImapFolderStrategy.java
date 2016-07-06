@@ -31,34 +31,26 @@ public class ImapFolderStrategy implements FolderStrategyIF {
 
     @Override
     public void loadContent(Folder f) {
-        if (f != null) {
-            try {
-                javax.mail.Folder folder = store.getDefaultFolder();
-                for (javax.mail.Folder x : folder.list()) {
-                    if(x!=null) {
-                        Folder newfolder = new Folder(new File(x.getName()), true);
-                        newfolder.setPath(x.getFullName());
-                        getTopFolder().addComponent(newfolder);
-                        System.out.println(newfolder);
+        if (!f.getComponents().isEmpty()) {
+            return;
+        }
+        try {   javax.mail.Folder topfolder = store.getDefaultFolder();
+                Folder topFolder = new Folder(new File(topfolder.getFullName()), true);
+                topFolder.setPath(topfolder.getFullName());
+                f.addComponent(topFolder);
+                for (javax.mail.Folder folder : topfolder.list()) {
+                    if (folder != null && folder.getFullName().length() > 0) {
+                        javax.mail.Folder subfolder = store.getFolder(folder.getName());
+                        if (subfolder != null && subfolder.getName().length() > 0) {
+                            System.out.println("\n\n\n" + subfolder.getName() + "Genau HIER");
+                            Folder subFolder = new Folder(new File(subfolder.getName()), subfolder.list().length > 0);
+                            f.addComponent(subFolder);
+                        }
                     }
                 }
-            } catch (MessagingException ex) {
-                Logger.getLogger(ImapFolderStrategy.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
-    }
-
-    @Override
-    public Folder getTopFolder() {
-        try {
-            javax.mail.Folder topFolder = store.getFolder(account.getName());
-            System.out.println(topFolder + " LOADCONTENT\n\n\n");
-            Folder f = new Folder(new File(topFolder.getName()), true);
-            f.setPath(topFolder.getFullName());
-            return f;
-        } catch (MessagingException ex) {
+        catch (MessagingException ex) {
             Logger.getLogger(ImapFolderStrategy.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return null;
     }
 }

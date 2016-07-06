@@ -3,6 +3,8 @@ package de.bht.fpa.mail.gruppe6.model.applicationLogic;
 import de.bht.fpa.mail.gruppe6.controller.AppController;
 import de.bht.fpa.mail.gruppe6.model.applicationLogic.imap.ImapEmailStrategy;
 import de.bht.fpa.mail.gruppe6.model.applicationLogic.imap.ImapFolderStrategy;
+import de.bht.fpa.mail.gruppe6.model.applicationLogic.xml.FileStrategy;
+import de.bht.fpa.mail.gruppe6.model.applicationLogic.xml.XmlEmailStrategy;
 import de.bht.fpa.mail.gruppe6.model.data.Account;
 import de.bht.fpa.mail.gruppe6.model.data.Email;
 import de.bht.fpa.mail.gruppe6.model.data.Folder;
@@ -15,8 +17,6 @@ public class ApplicationLogic implements ApplicationLogicIF {
     private FolderManager folder;
     private EmailManager mails;
     private AccountManagerIF acc;
-    private ImapEmailStrategy iMail;
-    private ImapFolderStrategy iFolder;
     private static File startDirectory = new File(System.getProperty("user.home"));
 
     public ApplicationLogic() {
@@ -48,15 +48,11 @@ public class ApplicationLogic implements ApplicationLogicIF {
     @Override
     public void changeDirectory(File file) {
         if (file != null) {
+            folder.setFolderStrategy(new FileStrategy());
+            mails.setEmailStrategy(new XmlEmailStrategy());
             folder = new FolderManager(file);
         }
     }
-
-    public void changeDirectory(Folder folde) {
-        folder.loadContent(folde);
-        
-    }
-
     @Override
     public void saveEmails(File file) {
         mails.saveEmails(file);
@@ -94,12 +90,10 @@ public class ApplicationLogic implements ApplicationLogicIF {
 
     @Override
     public void openAccount(String name) {
-        Account account = acc.getAccount(name);
-        iMail = new ImapEmailStrategy(account);
-        iFolder = new ImapFolderStrategy(account);
-        folder.setTopFolder(iFolder.getTopFolder());
-        mails.setEmailStrategy(iMail);
-        folder.setFolderStrategy(iFolder);
+        Account account = getAccount(name);
+        mails.setEmailStrategy(new ImapEmailStrategy(account));
+        folder.setFolderStrategy(new ImapFolderStrategy(account));
+        folder.setTopFolder(account.getTop());
         folder.loadContent(account.getTop());
     }
 }

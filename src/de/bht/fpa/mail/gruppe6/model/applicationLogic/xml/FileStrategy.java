@@ -35,9 +35,4 @@ public class FileStrategy implements FolderStrategyIF {
         }
         return false;
     }
-
-    @Override
-    public Folder getTopFolder() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 }

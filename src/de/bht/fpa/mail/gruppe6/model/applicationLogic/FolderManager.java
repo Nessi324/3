@@ -32,5 +32,6 @@ public class FolderManager {
     
     public void setFolderStrategy(FolderStrategyIF strategy){
     this.strategy = strategy;
+    loadContent(getTopFolder());
     }
 }

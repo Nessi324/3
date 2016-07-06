@@ -15,7 +15,6 @@ public class Folder extends Component {
     private final ArrayList<Component> content = new ArrayList<Component>();
 
     private boolean expandable;
-    @Transient
     private boolean loaded;
 
     public Folder(File path, boolean expandable) {
@@ -26,6 +25,10 @@ public class Folder extends Component {
 
     public Folder() {
     }
+    public void setExpandable(boolean expandable) {
+        this.expandable = expandable;
+    }
+
 
     @Override
     public void addComponent(Component comp) {
