@@ -156,7 +156,6 @@ public class AppController implements Initializable {
                     tableinfo.add(x);
                 }
             }
-            tableview.setItems(tableinfo);
             numberOfMails.setText(tableinfo.size() + "");
             directoryTree.refresh();
         }
@@ -169,9 +168,8 @@ public class AppController implements Initializable {
      */
     private void filterList() {
         String pattern = searchField.getText();
-        ObservableList<Email> liste = FXCollections.observableArrayList(appIF.search(pattern));
-        tableview.setItems(liste);
-        //gibt auch bei der Suche regelmäßig die Anzahl der Emails an
+        tableinfo.clear();
+        tableinfo.setAll(FXCollections.observableArrayList(appIF.search(pattern)));
         numberOfMails.setText(tableview.getItems().size() + "");
     }
 
@@ -340,6 +338,7 @@ public class AppController implements Initializable {
 
     public void inItTable() {
         tableinfo = FXCollections.observableArrayList();
+        tableview.setItems(tableinfo);
         importance.setCellValueFactory(new PropertyValueFactory<>("importance"));
         received.setCellValueFactory(new PropertyValueFactory<>("received"));
         read.setCellValueFactory(new PropertyValueFactory<>("read"));

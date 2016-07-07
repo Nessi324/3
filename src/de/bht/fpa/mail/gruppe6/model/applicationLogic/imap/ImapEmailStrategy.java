@@ -37,8 +37,9 @@ public class ImapEmailStrategy implements EmailStrategyIF {
         if (!f.getEmails().isEmpty()) {
             return;
         }
-        try {
-            javax.mail.Folder topFolder = store.getFolder(f.getName());
+        try {f.setLoaded();
+            javax.mail.Folder topFolder = store.getFolder(f.getPath());
+            System.out.println("Hier->"+topFolder.getFullName()+"Hier->"+f.getPath());
             topFolder.open(javax.mail.Folder.READ_ONLY);
             Message[] emails = topFolder.getMessages();
             for(Message x : emails){
