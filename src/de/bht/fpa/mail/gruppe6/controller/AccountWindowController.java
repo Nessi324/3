@@ -50,10 +50,18 @@ public class AccountWindowController implements Initializable {
 
     private void createAccount() {
         if (!name.getText().isEmpty() && !host.getText().isEmpty() && !username.getText().isEmpty() && !password.getText().isEmpty()) {
-            Account newaccount = new Account(name.getText(), host.getText(), username.getText(), password.getText());
-            app.setzeAccount(account, newaccount);
-            close();
+            if (account != null) {
+                account.setHost(host.getText());
+                account.setPassword(password.getText());
+                account.setUsername(username.getText());
+                app.editAccount(account);
+            }
+            else if (account == null) {
+                Account newaccount = new Account(name.getText(), host.getText(), username.getText(), password.getText());
+                app.newAccount(newaccount);
 
+            }
+            close();
         }
         else {
             errorMessage(0);

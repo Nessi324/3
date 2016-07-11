@@ -25,7 +25,7 @@ public class ImapEmailStrategy implements EmailStrategyIF {
 
     private Account account;
     private Store store;
-    
+
     public ImapEmailStrategy(Account account) {
         this.account = account;
         store = IMapConnectionHelper.connect(account);
@@ -34,18 +34,27 @@ public class ImapEmailStrategy implements EmailStrategyIF {
 
     @Override
     public void loadEmails(Folder f) {
-        if (!f.getEmails().isEmpty()) {
+        if (f.getName().equals(account.getName()) || f.getLoaded()==true || store == null) {
             return;
         }
-        try {f.setLoaded();
-            javax.mail.Folder topFolder = store.getFolder(f.getPath());
-            System.out.println("Hier->"+topFolder.getFullName()+"Hier->"+f.getPath());
-            topFolder.open(javax.mail.Folder.READ_ONLY);
-            Message[] emails = topFolder.getMessages();
-            for(Message x : emails){
-            Email mail = IMapEmailConverter.convertMessage(x);
-            f.addEmail(mail);
+        try {
+            if (!f.getLoaded() && store.getFolder(f.getPath()) != null && store.getFolder(f.getPath()).exists()) {
+                javax.mail.Folder topFolder = store.getFolder(f.getPath());
+                if (topFolder != null) {
+                    topFolder.open(javax.mail.Folder.READ_ONLY);
+                    Message[] emails = topFolder.getMessages();
+                    for (Message x : emails) {
+                        Email mail = IMapEmailConverter.convertMessage(x);
+                        if (!mail.toString().contains("false")) {
+                            f.addEmail(mail);
+                        }
+                    }
+
+                }
+                topFolder.close(false);
+                f.setLoaded();
             }
+
         } catch (MessagingException ex) {
             Logger.getLogger(ImapEmailStrategy.class.getName()).log(Level.SEVERE, null, ex);
         }

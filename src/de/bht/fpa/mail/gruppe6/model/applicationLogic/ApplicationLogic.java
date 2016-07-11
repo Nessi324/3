@@ -48,11 +48,11 @@ public class ApplicationLogic implements ApplicationLogicIF {
     @Override
     public void changeDirectory(File file) {
         if (file != null) {
-            folder.setFolderStrategy(new FileStrategy());
             mails.setEmailStrategy(new XmlEmailStrategy());
             folder = new FolderManager(file);
         }
     }
+
     @Override
     public void saveEmails(File file) {
         mails.saveEmails(file);
@@ -91,9 +91,17 @@ public class ApplicationLogic implements ApplicationLogicIF {
     @Override
     public void openAccount(String name) {
         Account account = getAccount(name);
-        mails.setEmailStrategy(new ImapEmailStrategy(account));
-        folder.setFolderStrategy(new ImapFolderStrategy(account));
         folder.setTopFolder(account.getTop());
-        folder.loadContent(account.getTop());
+        Folder topFolder = getTopFolder();
+        File file = new File(topFolder.getPath());
+        if (!file.exists()) {
+            mails.setEmailStrategy(new ImapEmailStrategy(account));
+            folder.setFolderStrategy(new ImapFolderStrategy(account));
+        }
+        else{
+        mails.setEmailStrategy(new XmlEmailStrategy());
+        folder.setFolderStrategy(new FileStrategy() );
+        }
+        folder.loadContent(getTopFolder());
     }
 }

@@ -80,15 +80,9 @@ public class AppController implements Initializable {
     }
 
     private void inItMenue() {
-
-        for (String acc : appIF.getAllAccounts()) {
-            openacc.getItems().add(new MenuItem(acc));
-            editacc.getItems().add(new MenuItem(acc));
-        }
+        inItAccountMenue();
         configureMenue(file, (e) -> handleAll(e));
         configureMenue(account, (e) -> handleAll(e));
-        configureMenue(openacc, (e) -> handleAll(e));
-        configureMenue(editacc, (e) -> handleAll(e));
     }
 
     public void configureMenue(Menu menu, EventHandler<ActionEvent> handler) {
@@ -147,13 +141,18 @@ public class AppController implements Initializable {
      * woraus wir die Emails entnehmen.
      */
     private void fillTableWithEmails(TreeItem<Component> treeitem) {
+        tableinfo.clear();
+        tableview.getItems().clear();
+        searchField.clear();
         if (treeitem != null) {
-            tableview.getItems().clear();
             Folder f = (Folder) treeitem.getValue();
+            f.getEmails().clear();
             appIF.loadEmails(f);
-            for (Email x : f.getEmails()) {
-                if (x != null && f.getEmails().size() > 0) {
-                    tableinfo.add(x);
+            if (f.getEmails() != null) {
+                for (Email x : f.getEmails()) {
+                    if (x != null && f.getEmails().size() > 0) {
+                        tableinfo.add(x);
+                    }
                 }
             }
             numberOfMails.setText(tableinfo.size() + "");
@@ -168,9 +167,11 @@ public class AppController implements Initializable {
      */
     private void filterList() {
         String pattern = searchField.getText();
-        tableinfo.clear();
-        tableinfo.setAll(FXCollections.observableArrayList(appIF.search(pattern)));
-        numberOfMails.setText(tableview.getItems().size() + "");
+        if(pattern!=null) {
+            tableinfo.clear();
+            tableinfo.setAll(FXCollections.observableArrayList(appIF.search(pattern)));
+            numberOfMails.setText(tableview.getItems().size() + "");
+        }
     }
 
     /**
@@ -182,7 +183,7 @@ public class AppController implements Initializable {
             textflow.getChildren().clear();
             textarea.clear();
         }
-        if (oldValue != newValue && newValue != null) {
+        else if (oldValue != newValue && newValue != null) {
             //textflow ist ein simplerer Weg als mehrere Labels zu setzen
             textflow.getChildren().clear();
             Text text = new Text(
@@ -295,26 +296,6 @@ public class AppController implements Initializable {
         configureTree();
     }
 
-    public void setzeAccount(Account modus, Account account) {
-        if (modus != null) {
-            modus.setHost(account.getHost());
-            modus.setPassword(account.getPassword());
-            modus.setUsername(account.getUsername());
-            System.out.println("Der Account "+ modus+ " wurde geupdatet\n\n\n");
-            appIF.updateAccount(modus);
-        }
-
-        if (appIF.getAccount(account.getName()) == null) {
-            if (modus == null) {
-                System.out.println("Der neue Accout "+ account.getName() +" wurde gesaved\n\n\n");
-                appIF.saveAccount(account);
-                openacc.getItems().add(new MenuItem(account.getName()));
-                editacc.getItems().add(new MenuItem(account.getName()));
-                configureMenue(editacc, (e) -> handleAll(e));
-            }
-        }
-    }
-
     /**
      * compare vergleicht 2 Strings, indem er sie in Date Objekte umwandelt und
      * dann einen Wert zurückgibt den wir zur Sortierung der EMail Tabelle
@@ -351,13 +332,15 @@ public class AppController implements Initializable {
     }
 
     public void expandNode(TreeItem<Component> node) {
-        if (!node.getChildren().get(0).equals(loading)) {
-        }
-        else {
-            node.getChildren().remove(loading);
-            Folder folder = (Folder) node.getValue();
-            appIF.loadContent(folder);
-            folder.getComponents().forEach((Component c) -> node.getChildren().add(buildTreeNode(c)));
+        if (node != null) {
+            if (!node.getChildren().get(0).equals(loading)) {
+            }
+            else {
+                node.getChildren().remove(loading);
+                Folder folder = (Folder) node.getValue();
+                appIF.loadContent(folder);
+                folder.getComponents().forEach((Component c) -> node.getChildren().add(buildTreeNode(c)));
+            }
         }
     }
 
@@ -380,5 +363,30 @@ public class AppController implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(AppController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    void editAccount(Account account) {
+        System.out.println("Der Account " + account.getName() + " wurde geupdatet\n\n\n");
+        appIF.updateAccount(account);
+    }
+
+    void newAccount(Account newaccount) {
+        if (appIF.getAccount(newaccount.getName()) == null) {
+            System.out.println("Der neue Accout " + newaccount.getName() + " wurde gesaved\n\n\n");
+            appIF.saveAccount(newaccount);
+            inItAccountMenue();
+        }
+    }
+
+    private void inItAccountMenue() {
+        openacc.getItems().clear();
+        editacc.getItems().clear();
+        for (String acc : appIF.getAllAccounts()) {
+            openacc.getItems().add(new MenuItem(acc));
+            editacc.getItems().add(new MenuItem(acc));
+        }
+
+        configureMenue(openacc, (e) -> handleAll(e));
+        configureMenue(editacc, (e) -> handleAll(e));
     }
 }

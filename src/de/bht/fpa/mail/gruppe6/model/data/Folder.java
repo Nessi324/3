@@ -25,10 +25,10 @@ public class Folder extends Component {
 
     public Folder() {
     }
+
     public void setExpandable(boolean expandable) {
         this.expandable = expandable;
     }
-
 
     @Override
     public void addComponent(Component comp) {
@@ -63,10 +63,13 @@ public class Folder extends Component {
 
     @Override
     public String toString() {
-        if (getLoaded()) {
-            return getName() + " [" + getEmails().size() + "]";
+        if ( this.getLoaded()== true && !this.getEmails().isEmpty()) {
+            return this.getName() + " [" + emails.size() + "]";
         }
-        return getName();
+        else if (this.getLoaded() == true) {
+            return this.getName() + "[0]";
+        }
+        return this.getName();
     }
-    
+
 }

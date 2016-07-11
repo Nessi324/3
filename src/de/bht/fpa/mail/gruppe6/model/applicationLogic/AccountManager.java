@@ -52,6 +52,7 @@ public class AccountManager implements AccountManagerIF {
         if (!accountList.contains(acc)) {
             accountDB.saveAccount(acc);
         }
+        accountList.add(acc);
     }
 
     /**

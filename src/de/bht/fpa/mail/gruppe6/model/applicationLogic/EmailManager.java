@@ -25,7 +25,6 @@ public class EmailManager {
 
     public EmailManager() {
         strategy = new XmlEmailStrategy();
-       // strategy = new ImapEmailStrategy();
     }
 
     public void loadEmails(Folder f) {

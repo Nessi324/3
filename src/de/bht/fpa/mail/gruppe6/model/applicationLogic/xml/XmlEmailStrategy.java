@@ -16,22 +16,26 @@ import de.bht.fpa.mail.gruppe6.model.applicationLogic.EmailStrategyIF;
  *
  * @author Nessi
  */
-public class XmlEmailStrategy implements EmailStrategyIF{
+public class XmlEmailStrategy implements EmailStrategyIF {
 
     public XmlEmailStrategy() {
     }
+
     @Override
     public void loadEmails(Folder f) {
-        if (f != null && f.getEmails().isEmpty() && f.getPath().length() > 0) {
-            f.setLoaded();
-            File file = new File(f.getPath());
-            FileFilter filter = (File name) -> name.getName().endsWith(".xml");
-            for (File x : file.listFiles(filter)) {
-                Email email = JAXB.unmarshal(x, Email.class);
-                if (!email.toString().contains("false")) {
-                    f.addEmail(email);
+            if (f != null && f.getEmails()!=null && f.getPath().length() > 0) {
+                File file = new File(f.getPath());
+                FileFilter filter = (File name) -> name.getName().endsWith(".xml");
+                if (file.listFiles(filter) != null && file.listFiles(filter).length > 0) {
+                    for (File x : file.listFiles(filter)) {
+                        Email email = JAXB.unmarshal(x, Email.class);
+                        if (email != null && !email.toString().contains("false")) {
+                            f.addEmail(email);
+                        }
+                    }
                 }
+                f.setLoaded();
             }
-        }
+
     }
 }

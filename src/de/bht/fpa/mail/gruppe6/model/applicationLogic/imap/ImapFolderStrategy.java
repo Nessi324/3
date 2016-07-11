@@ -33,13 +33,13 @@ public class ImapFolderStrategy implements FolderStrategyIF {
 
     @Override
     public void loadContent(Folder f) {
-        if (!f.getComponents().isEmpty()) {
+        if (!f.getComponents().isEmpty()|| store == null) {
             return;
         }
         try {
             javax.mail.Folder topfolder = store.getDefaultFolder();
             if (!f.getName().contains(accountName)) {
-                topfolder = store.getFolder(f.getName());
+                topfolder = store.getFolder(f.getPath());
             }
             for (javax.mail.Folder folder : topfolder.list()) {
                 if (folder != null && folder.getName().length() > 0) {
