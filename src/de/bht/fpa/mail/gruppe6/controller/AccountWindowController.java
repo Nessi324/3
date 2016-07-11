@@ -91,12 +91,7 @@ public class AccountWindowController implements Initializable {
     }
 
     private void errorMessage(int x) {
-        if (x == 1) {
-            errortext.setText("Ein Kontakt mit diesem Namen existiert bereits.");
-        }
-        if (x == 0) {
-            errortext.setText("Alle Felder brauchen Daten.");
-        }
+        errortext.setText("Alle Felder brauchen Daten.");
         errortext.setVisible(true);
     }
 }

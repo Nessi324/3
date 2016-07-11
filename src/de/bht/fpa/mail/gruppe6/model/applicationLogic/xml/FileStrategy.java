@@ -13,7 +13,6 @@ public class FileStrategy implements FolderStrategyIF {
     public void loadContent(Folder f) {
         if (f != null) {
             File file = new File(f.getPath());
-            System.out.println(f.getPath());
             if (file.listFiles() != null) {
                 for (File fs : file.listFiles()) {
                     if (fs.isDirectory()) {

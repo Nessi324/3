@@ -71,7 +71,6 @@ public class AccountFileDAO implements AccountDAOIF {
     private void saveAccounts(List<Account> accList) {
         try {
             File accountFile = ACCOUNT_FILE;
-            System.out.println(accountFile);
             boolean deleted = accountFile.delete();
             FileOutputStream fileOutput = new FileOutputStream(accountFile);
             ObjectOutputStream os = new ObjectOutputStream(fileOutput);

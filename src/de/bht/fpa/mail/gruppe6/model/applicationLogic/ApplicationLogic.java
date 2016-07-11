@@ -94,13 +94,13 @@ public class ApplicationLogic implements ApplicationLogicIF {
         folder.setTopFolder(account.getTop());
         Folder topFolder = getTopFolder();
         File file = new File(topFolder.getPath());
-        if (!file.exists()) {
-            mails.setEmailStrategy(new ImapEmailStrategy(account));
-            folder.setFolderStrategy(new ImapFolderStrategy(account));
+        if (file.exists()) {
+            mails.setEmailStrategy(new XmlEmailStrategy());
+            folder.setFolderStrategy(new FileStrategy());
         }
         else{
-        mails.setEmailStrategy(new XmlEmailStrategy());
-        folder.setFolderStrategy(new FileStrategy() );
+            mails.setEmailStrategy(new ImapEmailStrategy(account));
+            folder.setFolderStrategy(new ImapFolderStrategy(account));
         }
         folder.loadContent(getTopFolder());
     }

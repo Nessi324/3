@@ -72,11 +72,16 @@ public class AppController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         appIF = new ApplicationLogic();
-        numberOfMails.setText("0");
         configureTree();
-        searchField.textProperty().addListener((e) -> filterList());
         inItMenue();
         inItTable();
+        inItSearch();
+        directoryTree.getSelectionModel().selectedItemProperty().addListener((obs, old_val, new_val) -> fillTableWithEmails(new_val));
+    }
+
+    public void inItSearch() {
+        numberOfMails.setText("0");
+        searchField.textProperty().addListener((obs, old_v, new_v) -> filterList(new_v));
     }
 
     private void inItMenue() {
@@ -102,7 +107,7 @@ public class AppController implements Initializable {
                     openAccountWindow(it.getText());
                     break;
                 case "Open Account":
-                    accountAction(it.getText());
+                    openAccount(it.getText());
                     break;
             }
             switch (it.getText()) {
@@ -143,20 +148,19 @@ public class AppController implements Initializable {
     private void fillTableWithEmails(TreeItem<Component> treeitem) {
         tableinfo.clear();
         tableview.getItems().clear();
-        searchField.clear();
         if (treeitem != null) {
             Folder f = (Folder) treeitem.getValue();
-            f.getEmails().clear();
-            appIF.loadEmails(f);
-            if (f.getEmails() != null) {
+            if (f != null && f.getEmails() != null) {
+                appIF.loadEmails(f);
                 for (Email x : f.getEmails()) {
                     if (x != null && f.getEmails().size() > 0) {
                         tableinfo.add(x);
                     }
                 }
+                tableview.setItems(tableinfo);
+                numberOfMails.setText(tableinfo.size() + "");
+                directoryTree.refresh();
             }
-            numberOfMails.setText(tableinfo.size() + "");
-            directoryTree.refresh();
         }
     }
 
@@ -165,9 +169,8 @@ public class AppController implements Initializable {
      * search aus der App um eine aktuallisierte Liste zu erstellen. Die
      * Ergebnisse werden genutzt,um die Items in der tableview neu zu setzen.
      */
-    private void filterList() {
-        String pattern = searchField.getText();
-        if(pattern!=null) {
+    private void filterList(String pattern) {
+        if (pattern != null) {
             tableinfo.clear();
             tableinfo.setAll(FXCollections.observableArrayList(appIF.search(pattern)));
             numberOfMails.setText(tableview.getItems().size() + "");
@@ -222,7 +225,6 @@ public class AppController implements Initializable {
         rootNode.setExpanded(true);
         rootNode.getValue().getComponents().forEach((Component c) -> rootNode.getChildren().add(buildTreeNode(c)));
         directoryTree.setRoot(rootNode);
-        directoryTree.getSelectionModel().selectedItemProperty().addListener((obs, old_val, new_val) -> fillTableWithEmails(new_val));
     }
 
     public TreeItem<Component> buildTreeNode(Component c) {
@@ -291,9 +293,10 @@ public class AppController implements Initializable {
         configureTree();
     }
 
-    public void accountAction(String name) {
+    public void openAccount(String name) {
         appIF.openAccount(name);
         configureTree();
+        numberOfMails.setText("0");
     }
 
     /**
@@ -347,7 +350,6 @@ public class AppController implements Initializable {
     public void openAccountWindow(String modus) {
         try {
             Account account = appIF.getAccount(modus);
-            System.out.println(account);
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/de/bht/fpa/mail/gruppe6/view/AccountWindow.fxml"));
             loader.setController(new AccountWindowController(account, this));
             Parent root = (Parent) loader.load();
@@ -366,13 +368,11 @@ public class AppController implements Initializable {
     }
 
     void editAccount(Account account) {
-        System.out.println("Der Account " + account.getName() + " wurde geupdatet\n\n\n");
         appIF.updateAccount(account);
     }
 
     void newAccount(Account newaccount) {
         if (appIF.getAccount(newaccount.getName()) == null) {
-            System.out.println("Der neue Accout " + newaccount.getName() + " wurde gesaved\n\n\n");
             appIF.saveAccount(newaccount);
             inItAccountMenue();
         }

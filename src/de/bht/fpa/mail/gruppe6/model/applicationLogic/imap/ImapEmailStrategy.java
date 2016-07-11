@@ -27,14 +27,15 @@ public class ImapEmailStrategy implements EmailStrategyIF {
     private Store store;
 
     public ImapEmailStrategy(Account account) {
+        if(account!=null){
         this.account = account;
-        store = IMapConnectionHelper.connect(account);
+        store = IMapConnectionHelper.connect(account);}
 
     }
 
     @Override
     public void loadEmails(Folder f) {
-        if (f.getName().equals(account.getName()) || f.getLoaded()==true || store == null) {
+        if (f.getName().equals(account.getName()) || store == null) {
             return;
         }
         try {
@@ -51,8 +52,8 @@ public class ImapEmailStrategy implements EmailStrategyIF {
                     }
 
                 }
-                topFolder.close(false);
                 f.setLoaded();
+                System.out.println(f.getPath());
             }
 
         } catch (MessagingException ex) {

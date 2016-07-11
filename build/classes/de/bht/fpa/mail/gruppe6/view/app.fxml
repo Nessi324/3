@@ -106,7 +106,7 @@
                                  </padding>
                               </VBox>
                               <TextArea fx:id="textarea" layoutX="10.0" layoutY="112.0" prefHeight="134.0" prefWidth="576.0" wrapText="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="109.0" />
-                              <TextFlow fx:id="textflow" layoutX="121.0" layoutY="1.0" lineSpacing="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="109.0" prefWidth="777.0" AnchorPane.bottomAnchor="143.0" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="-302.0" AnchorPane.topAnchor="1.0">
+                              <TextFlow fx:id="textflow" layoutX="121.0" layoutY="1.0" lineSpacing="10.0" maxHeight="-Infinity" maxWidth="1000.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="109.0" AnchorPane.bottomAnchor="143.0" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="-302.0" AnchorPane.topAnchor="1.0">
                                  <padding>
                                     <Insets top="7.0" />
                                  </padding></TextFlow>

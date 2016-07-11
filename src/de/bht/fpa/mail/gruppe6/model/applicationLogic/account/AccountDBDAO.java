@@ -31,7 +31,6 @@ public class AccountDBDAO implements AccountDAOIF {
         EntityManager em = emf.createEntityManager();
         Query query = em.createQuery("select a from Account a");
         List<Account> List = query.getResultList();
-        System.out.println(List);
         em.close();
         return List;
     }

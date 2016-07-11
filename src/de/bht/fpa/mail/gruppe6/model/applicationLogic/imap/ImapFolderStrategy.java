@@ -23,12 +23,11 @@ public class ImapFolderStrategy implements FolderStrategyIF {
 
     private Account account;
     private Store store;
-    private String accountName;
 
     public ImapFolderStrategy(Account account) {
+        if(account!=null){
         this.account = account;
-        store = IMapConnectionHelper.connect(account);
-        accountName = account.getName();
+        store = IMapConnectionHelper.connect(account);}
     }
 
     @Override
@@ -38,7 +37,7 @@ public class ImapFolderStrategy implements FolderStrategyIF {
         }
         try {
             javax.mail.Folder topfolder = store.getDefaultFolder();
-            if (!f.getName().contains(accountName)) {
+            if (!f.getName().contains(account.getName())) {
                 topfolder = store.getFolder(f.getPath());
             }
             for (javax.mail.Folder folder : topfolder.list()) {

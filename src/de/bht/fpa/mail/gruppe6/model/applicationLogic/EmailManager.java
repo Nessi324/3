@@ -28,8 +28,10 @@ public class EmailManager {
     }
 
     public void loadEmails(Folder f) {
-        strategy.loadEmails(f);
-        currentFolder = f;
+        if (f != null) {
+            strategy.loadEmails(f);
+            currentFolder = f;
+        }
     }
 
     public void saveEmails(File file) {

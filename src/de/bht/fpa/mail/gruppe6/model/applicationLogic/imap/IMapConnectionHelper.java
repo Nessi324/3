@@ -35,10 +35,8 @@ public class IMapConnectionHelper {
                 return store;
         } catch (final AuthenticationFailedException ex) {
             System.out.println("Authentifizierung ist fehlgeschlagen.");
-        } catch (NoSuchProviderException ex) {
-            Logger.getLogger(IMapConnectionHelper.class.getName()).log(Level.SEVERE, null, ex);
         } catch (MessagingException ex) {
-            Logger.getLogger(IMapConnectionHelper.class.getName()).log(Level.SEVERE, null, ex);
+           System.out.println("Authentifizierung ist fehlgeschlagen.");
         }
         return null;
     }
