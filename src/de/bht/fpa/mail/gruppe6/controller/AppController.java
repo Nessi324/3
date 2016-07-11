@@ -81,7 +81,7 @@ public class AppController implements Initializable {
 
     public void inItSearch() {
         numberOfMails.setText("0");
-        searchField.textProperty().addListener((obs, old_v, new_v) -> filterList(new_v));
+        searchField.textProperty().addListener((e) -> filterList());
     }
 
     private void inItMenue() {
@@ -146,8 +146,7 @@ public class AppController implements Initializable {
      * woraus wir die Emails entnehmen.
      */
     private void fillTableWithEmails(TreeItem<Component> treeitem) {
-        tableinfo.clear();
-        tableview.getItems().clear();
+        clear();
         if (treeitem != null) {
             Folder f = (Folder) treeitem.getValue();
             if (f != null && f.getEmails() != null) {
@@ -157,7 +156,6 @@ public class AppController implements Initializable {
                         tableinfo.add(x);
                     }
                 }
-                tableview.setItems(tableinfo);
                 numberOfMails.setText(tableinfo.size() + "");
                 directoryTree.refresh();
             }
@@ -169,8 +167,9 @@ public class AppController implements Initializable {
      * search aus der App um eine aktuallisierte Liste zu erstellen. Die
      * Ergebnisse werden genutzt,um die Items in der tableview neu zu setzen.
      */
-    private void filterList(String pattern) {
-        if (pattern != null) {
+    private void filterList() {
+        if (searchField.getText() != null) {
+            String pattern = searchField.getText();
             tableinfo.clear();
             tableinfo.setAll(FXCollections.observableArrayList(appIF.search(pattern)));
             numberOfMails.setText(tableview.getItems().size() + "");
@@ -295,6 +294,15 @@ public class AppController implements Initializable {
     public void openAccount(String name) {
         appIF.openAccount(name);
         configureTree();
+        clear();
+    }
+
+    public void clear() {
+        if (!searchField.getText().isEmpty()) {
+            searchField.setText(" ");
+        }
+        tableinfo.clear();
+        tableview.getItems().clear();
         numberOfMails.setText("0");
     }
 

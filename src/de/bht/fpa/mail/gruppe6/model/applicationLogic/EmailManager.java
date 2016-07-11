@@ -56,11 +56,12 @@ public class EmailManager {
 
     public List<Email> search(String pattern) {
         ArrayList<Email> ersatz = new ArrayList<>();
+        if(pattern!=null){
         for (Email x : currentFolder.getEmails()) {
             if (x.toString().toLowerCase().contains(pattern) || x.getText().toLowerCase().contains(pattern)) {
                 ersatz.add(x);
             }
-        }
+        }}
         return ersatz;
     }
 

@@ -44,9 +44,9 @@ public class ImapFolderStrategy implements FolderStrategyIF {
                 if (folder != null && folder.getName().length() > 0) {
                     if (folder.getName().contains("Gmail")) {
                         for (javax.mail.Folder x : folder.list()) {
-                            Folder subFolder = new Folder(new File(x.getFullName()), x.list().length > 0);
-                            subFolder.setPath(x.getFullName());
-                            f.addComponent(subFolder);
+                            Folder gmailFolders = new Folder(new File(x.getFullName()), x.list().length > 0);
+                            gmailFolders.setPath(x.getFullName());
+                            f.addComponent(gmailFolders);
                         }
                     }
                     else {

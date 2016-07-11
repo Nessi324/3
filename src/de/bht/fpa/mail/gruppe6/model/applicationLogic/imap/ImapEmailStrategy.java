@@ -27,19 +27,20 @@ public class ImapEmailStrategy implements EmailStrategyIF {
     private Store store;
 
     public ImapEmailStrategy(Account account) {
-        if(account!=null){
-        this.account = account;
-        store = IMapConnectionHelper.connect(account);}
+        if (account != null) {
+            this.account = account;
+            store = IMapConnectionHelper.connect(account);
+        }
 
     }
 
     @Override
     public void loadEmails(Folder f) {
-        if (f==null || f.getName().equals(account.getName()) || store == null) {
+        if (f == null || f.getName().equals(account.getName()) || store == null) {
             return;
         }
         try {
-            if (!f.getLoaded() && store.getFolder(f.getPath()) != null && store.getFolder(f.getPath()).exists()) {
+            if (!f.getLoaded() && f.getEmails().isEmpty() && store.getFolder(f.getPath()) != null) {
                 javax.mail.Folder topFolder = store.getFolder(f.getPath());
                 if (topFolder != null) {
                     topFolder.open(javax.mail.Folder.READ_ONLY);
@@ -50,10 +51,8 @@ public class ImapEmailStrategy implements EmailStrategyIF {
                             f.addEmail(mail);
                         }
                     }
-
                 }
                 f.setLoaded();
-                System.out.println(f.getPath());
             }
 
         } catch (MessagingException ex) {
