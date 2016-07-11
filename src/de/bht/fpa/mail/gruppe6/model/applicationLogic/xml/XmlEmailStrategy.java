@@ -23,7 +23,7 @@ public class XmlEmailStrategy implements EmailStrategyIF {
 
     @Override
     public void loadEmails(Folder f) {
-            if (f != null && f.getEmails()!=null && f.getPath().length() > 0) {
+            if (f != null && f.getEmails().isEmpty() && f.getPath().length() > 0) {
                 File file = new File(f.getPath());
                 FileFilter filter = (File name) -> name.getName().endsWith(".xml");
                 if (file.listFiles(filter) != null && file.listFiles(filter).length > 0) {

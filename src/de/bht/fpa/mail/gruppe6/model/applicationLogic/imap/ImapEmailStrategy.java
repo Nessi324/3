@@ -35,7 +35,7 @@ public class ImapEmailStrategy implements EmailStrategyIF {
 
     @Override
     public void loadEmails(Folder f) {
-        if (f.getName().equals(account.getName()) || store == null) {
+        if (f==null || f.getName().equals(account.getName()) || store == null) {
             return;
         }
         try {

@@ -249,8 +249,7 @@ public class AppController implements Initializable {
         File s = fs.showDialog(null);
         if (s != null) {
             appIF.changeDirectory(s);
-            String y = s.getAbsolutePath();
-            addHistory(y);
+            addHistory(s.toString());
             configureTree();
         }
     }

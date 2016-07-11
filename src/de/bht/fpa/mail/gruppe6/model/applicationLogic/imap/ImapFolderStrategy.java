@@ -32,7 +32,7 @@ public class ImapFolderStrategy implements FolderStrategyIF {
 
     @Override
     public void loadContent(Folder f) {
-        if (!f.getComponents().isEmpty()|| store == null) {
+        if (f==null || !f.getComponents().isEmpty()|| store == null) {
             return;
         }
         try {
